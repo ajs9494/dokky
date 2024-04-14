@@ -1,0 +1,96 @@
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+#header {
+  display: flex;
+  width: 100vw;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px rgb(162, 164, 168, 0.4) solid;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+#logo {
+  width: 200px;
+  height: 60px;
+  margin-right: 200px;
+  margin-left: 10px;
+  text-align: center;
+  font-size: 3rem;
+  line-height: 60px;
+}
+
+#menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 550px;
+  height: 60px;
+}
+
+#login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 60px;
+  margin-left: 200px;
+  margin-right: 10px;
+}
+
+#login-btn {
+  margin-right: 20px;
+  width: 80px;
+  height: 50px;
+  border: 2px solid rgba(85, 85, 85);
+  background-color: white;
+  border-radius: 4px;
+  transition-duration: 0.2s;
+}
+
+#login-btn:hover {
+  color: white;
+  background-color: rgb(85, 85, 85);
+  cursor: pointer;
+}
+
+#register-btn {
+  width: 80px;
+  height: 50px;
+  border: 2px solid rgba(85, 85, 85);
+  background-color: white;
+  border-radius: 4px;
+  transition-duration: 0.2s;
+}
+
+#register-btn:hover {
+  color: white;
+  background-color: rgb(85, 85, 85);
+  cursor: pointer;
+}
+
+.menu-board {
+  width: 250px;
+  height: 50px;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 50px;
+}
+
+.menu-board:first-child {
+  width: 251px;
+  border-right: 1px rgb(162, 164, 168, 0.4) solid;
+}
