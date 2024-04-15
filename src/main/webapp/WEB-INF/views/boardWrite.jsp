@@ -18,6 +18,9 @@
 <title>DOKKY</title>
 <link rel="stylesheet"
 	href="http://localhost:8080/ch2/resources/css/header.css" />
+	    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 <link
 	href="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.3/dist/quill.snow.css"
 	rel="stylesheet" />
@@ -52,6 +55,10 @@
 
 .ql-editor {
 	min-height: 300px;
+	  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 #btn-cnt {
@@ -91,10 +98,10 @@
 </head>
 <body>
 	<div id="header">
-		<div id="logo">
+		<div id="logo" class="noto-sans700">
 			<a href="<c:url value='/' />">DOKKY</a>
 		</div>
-		<div id="menu">
+		<div id="menu" class="noto-sans700">
 			<div class="menu-board">
 				<a href="<c:url value='/freeBoard/list' />">자유게시판</a>
 			</div>
@@ -103,15 +110,15 @@
 			</div>
 		</div>
 		<div id="login">
-			<button id="login-btn" onclick="location.href='${loginOutLink}'">${loginOut}</button>
-			<button id="register-btn" onclick="location.href='/ch2/register/add'">회원가입</button>
+			<button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}'">${loginOut}</button>
+			<button id="register-btn" class="noto-sans400" onclick="location.href='/ch2/register/add'">회원가입</button>
 		</div>
 	</div>
 	<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/write' : '/questionBoard/write'}${searchCondition.queryString}" />" method="post"
-		id="container" onsubmit="return formCheck(this)">
+		id="container" class="noto-sans400" onsubmit="return formCheck(this)">
 		<div id=title-cnt>
 			<div>제목</div>
-			<input type="text" id="title" name="title" placeholder="제목을 입력해주세요." value="${board.title != null ? board.title : ''}"></input>
+			<input type="text" id="title" class="noto-sans400" name="title" placeholder="제목을 입력해주세요." value="${board.title != null ? board.title : ''}"></input>
 		</div>
 		<div id="editor"></div>
 		<input type="hidden" id="contents" name="contents" value="${board.contents != null ? board.contents : ''}"/>
@@ -119,7 +126,7 @@
 			<a
 				href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}${searchCondition.queryString}" />"
 				id="cancel-btn" onclick="return confirm('게시글 작성을 취소하시겠습니까?')">취소</a>
-			<button id="write-btn">등록</button>
+			<button id="write-btn" class="noto-sans400">등록</button>
 		</div>
 	</form>
 	<script>

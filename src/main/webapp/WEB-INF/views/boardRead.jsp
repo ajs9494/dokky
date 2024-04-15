@@ -15,6 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DOKKY</title>
     <link rel="stylesheet" href="http://localhost:8080/ch2/resources/css/header.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <style>
       #container {
@@ -64,10 +67,13 @@
         height: 30px;
         color: white;
         text-align: center;
-        line-height: 30px;
         margin-left: 10px;
         cursor: pointer;
         font-size: 1rem;
+      }
+      
+      #board-btn-cnt a {
+      	line-height: 28px;
       }
 
       #board-btn-cnt button:hover, #board-btn-cnt a:hover {
@@ -270,17 +276,17 @@
   	if(msg=="UPD_OK") alert("게시글이 수정되었습니다");
   </script>
     <div id="header">
-      <div id="logo"><a href="<c:url value='/' />">DOKKY</a></div>
-      <div id="menu">
+      <div id="logo" class="noto-sans700"><a href="<c:url value='/' />">DOKKY</a></div>
+      <div id="menu" class="noto-sans700">
         <div class="menu-board"><a href="<c:url value='/freeBoard/list' />">자유게시판</a></div>
         <div class="menu-board"><a href="<c:url value='/questionBoard/list' />">질문게시판</a></div>
       </div>
       <div id="login">
-        <button id="login-btn" onclick="location.href='${loginOutLink}${searchCondition.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
-        <button id="register-btn" onclick="location.href='/ch2/register/add'">회원가입</button>
+        <button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}${searchCondition.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
+        <button id="register-btn" class="noto-sans400" onclick="location.href='/ch2/register/add'">회원가입</button>
       </div>
     </div>
-    <div id="container">
+    <div id="container" class="noto-sans400">
       <div id="board-container">
         <div id="board-header">
           <div id="board-header-writer">${board.writer}</div>
@@ -298,8 +304,8 @@
           		<input type="hidden" name="bno" value="${board.bno}"/>
           		<input type="hidden" name="title" value="${board.title}"/>
           		<input type="hidden" name="contents" value="${board.contents}"/>
-          		<button>수정</button></form>
-          		<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/remove/' : '/questionBoard/remove/'}${board.bno}${searchCondition.queryString}" />" method="post" onsubmit="return confirm('게시글을 삭제하시겠습니까?')"><input type="hidden" name="_method" value="DELETE"/><button>삭제</button></form>
+          		<button class="noto-sans400">수정</button></form>
+          		<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/remove/' : '/questionBoard/remove/'}${board.bno}${searchCondition.queryString}" />" method="post" onsubmit="return confirm('게시글을 삭제하시겠습니까?')"><input type="hidden" name="_method" value="DELETE"/><button class="noto-sans400">삭제</button></form>
           	</c:if>
           <a href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}${searchCondition.queryString}" />">목록</a>
         </div>
@@ -330,27 +336,28 @@
           <textarea
             id="comment-add-contents"
             name="contents"
+            class="noto-sans400"
             maxlength="1000"
             spellcheck="false"
             placeholder="${hasSessionId ? '댓글을 작성해 보세요.' : '로그인 후에 댓글을 작성해 주세요.'}"
             ${hasSessionId ? "" : "disabled"}
           ></textarea>
-          <button type="button" id="comment-add-btn" ${hasSessionId ? "" : "disabled"}>등록</button>
+          <button type="button" id="comment-add-btn" class="noto-sans400" ${hasSessionId ? "" : "disabled"}>등록</button>
         </div>
             <div id="rep-cnt">
-        	<textarea id="rep-contents" maxlength="1000" spellcheck="false" placeholder="답글을 작성해 주세요."></textarea>
-        	<button type="button" id="rep-add-btn">등록</button>
+        	<textarea id="rep-contents" class="noto-sans400" maxlength="1000" spellcheck="false" placeholder="답글을 작성해 주세요."></textarea>
+        	<button type="button" id="rep-add-btn" class="noto-sans400">등록</button>
         </div>
       </div>
     </div>
     <div id="modal">
     	<div id="modal-content">
     		<span class="close close-icon">&times</span>
-    		<div id="mod-cnt">
+    		<div id="mod-cnt" class="noto-sans400">
     			<h2>댓글 수정</h2>
     			<input type="hidden" id="mod-cno"/>
     			<input type="hidden" id="mod-writer"/>
-    			<textarea id="mod-contents" maxlength="1000" spellcheck="false" placeholder="수정할 내용을 작성해 주세요."></textarea>
+    			<textarea id="mod-contents" class="noto-sans400" maxlength="1000" spellcheck="false" placeholder="수정할 내용을 작성해 주세요."></textarea>
     			<div id="mod-btn-cnt">
     				<span id="mod-btn">등록</span>
     				<span class="close close-btn">취소</span>

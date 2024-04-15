@@ -19,6 +19,9 @@
 <title>DOKKY</title>
 <link rel="stylesheet"
 	href="http://localhost:8080/ch2/resources/css/header.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 <style>
 #container {
 	display: flex;
@@ -30,11 +33,11 @@
 }
 
 #board-title {
-	background-color: rgb(192, 192, 192);
+	background-color: rgba(74, 165, 255, 0.2);
 	width: 100%;
 	height: 80px;
 	text-align: center;
-	font-size: 2.5rem;
+	font-size: 2rem;
 	line-height: 80px;
 }
 
@@ -121,6 +124,11 @@
 	height: 100%;
 }
 
+#page-nav > a {
+	position: relative;
+	top: 1px;
+}
+
 #page-nav>ul {
 	display: flex;
 	flex-direction: row;
@@ -193,10 +201,10 @@
 	if(msg=="READ_ERR") alert("게시글을 불러오는데 실패했습니다!");
 </script>
 	<div id="header">
-		<div id="logo">
+		<div id="logo" class="noto-sans700">
 			<a href="<c:url value='/' />">DOKKY</a>
 		</div>
-		<div id="menu">
+		<div id="menu" class="noto-sans700">
 			<div class="menu-board">
 				<a href="<c:url value='/freeBoard/list' />">자유게시판</a>
 			</div>
@@ -205,13 +213,13 @@
 			</div>
 		</div>
 		<div id="login">
-			<button id="login-btn" onclick="location.href='${loginOutLink}${ph.sc.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
-			<button id="register-btn" onclick="location.href='/ch2/register/add'">회원가입</button>
+			<button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}${ph.sc.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
+			<button id="register-btn" class="noto-sans400" onclick="location.href='/ch2/register/add'">회원가입</button>
 		</div>
 	</div>
 	<div id="container">
-		<div id="board-title">${whichBoard eq 'free' ? '자유게시판' : '질문게시판'}</div>
-		<div id="board-list">
+		<div id="board-title" class="noto-sans700">${whichBoard eq 'free' ? '자유게시판' : '질문게시판'}</div>
+		<div id="board-list" class="noto-sans400">
 			<table>
 				<colgroup>
 					<col class="col-bno" />
@@ -263,10 +271,10 @@
 						<div style="text-align:center; font-size:1.2rem; height:200px; line-height:200px">게시물이 없습니다.</div>
 					</c:if>
 		</div>
-		<div id="write-btn-cnt">
+		<div id="write-btn-cnt" class="noto-sans400">
 			<a href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/write' : '/questionBoard/write'}${ph.sc.queryString}" />" id="write-btn">글쓰기</a>
 		</div>
-		<div id="page-nav-cnt">
+		<div id="page-nav-cnt" class="noto-sans400">
 			<div id="page-nav">
 				<c:if test="${li ne null}">
 					<c:if test="${ph.showPrev}">
@@ -294,16 +302,16 @@
 				</c:if>
 			</div>
 		</div>
-		<form id="search-cnt" action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}" />"
+		<form id="search-cnt" class="noto-sans400" action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}" />"
 			method="get">
-			<select id="condition" name="option">
+			<select id="condition" name="option" class="noto-sans400">
 				<option value="TC" ${"TC".equals(param.option) ? "selected" : ""}>제목+내용</option>
 				<option value="T" ${"T".equals(param.option) ? "selected" : ""}>제목</option>
 				<option value="C" ${"C".equals(param.option) ? "selected" : ""}>내용</option>
 				<option value="W" ${"W".equals(param.option) ? "selected" : ""}>글쓴이</option>
-			</select> <input type="text" id="search-text" name="keyword"
-				value="${param.keyword}" />
-			<button type="submit" id="search-btn">검색</button>
+			</select> <input type="text" id="search-text" name="keyword" class="noto-sans400" 
+				value="${param.keyword}"  />
+			<button type="submit" id="search-btn" class="noto-sans400">검색</button>
 		</form>
 	</div>
 </body>

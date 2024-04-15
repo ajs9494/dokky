@@ -7,6 +7,9 @@
 <!DOCTYPE html>
   <head>
     <link rel="stylesheet" href="resources/css/header.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <title>DOKKY</title>
     <style>
       #board-container {
@@ -25,7 +28,8 @@
       }
 
       .home-board-header {
-        background-color: rgb(192, 192, 192);
+        background-color: rgba(74, 165, 255, 0.2);
+        border-radius: 20px;
         font-size: 1.5rem;
         padding: 20px;
       }
@@ -63,20 +67,20 @@
   		if(msg=="REG_ERR") alert("회원가입이 실패했습니다! 다시 시도해주세요.");
   	</script>
     <div id="header">
-      <div id="logo"><a href="<c:url value='/' />">DOKKY</a></div>
-      <div id="menu">
+      <div id="logo" class="noto-sans700"><a href="<c:url value='/' />">DOKKY</a></div>
+      <div id="menu" class="noto-sans700">
         <div class="menu-board"><a href="<c:url value='/freeBoard/list' />">자유게시판</a></div>
         <div class="menu-board"><a href="<c:url value='/questionBoard/list' />">질문게시판</a></div>
       </div>
       <div id="login">
-        <button id="login-btn" onclick="location.href='${loginOutLink}'">${loginOut}</button>
-        <button id="register-btn" onclick="location.href='/ch2/register/add'">회원가입</button>
+        <button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}'">${loginOut}</button>
+        <button id="register-btn" class="noto-sans400" onclick="location.href='/ch2/register/add'">회원가입</button>
       </div>
     </div>
     <div id="board-container">
       <div id="free-board" class="home-board">
-        <div class="home-board-header"><a href="<c:url value='/freeBoard/list' />">자유게시판</a></div>
-        <ul>
+        <div class="home-board-header noto-sans700"><a href="<c:url value='/freeBoard/list' />">자유게시판</a></div>
+        <ul class="noto-sans400">
           <c:forEach var="board" items="${fli}">
           	<li>
           		<a class="board-title" href="<c:url value='/freeBoard/read/${board.bno}' />">${board.title}</a>
@@ -88,8 +92,8 @@
         </ul>
       </div>
       <div id="question-board" class="home-board">
-        <div class="home-board-header"><a href="<c:url value='/questionBoard/list' />">질문게시판</a></div>
-        <ul>
+        <div class="home-board-header noto-sans700"><a href="<c:url value='/questionBoard/list' />">질문게시판</a></div>
+        <ul class="noto-sans400">
           <c:forEach var="board" items="${qli}">
           	<li>
           		<a class="board-title" href="<c:url value='/questionBoard/read/${board.bno}' />">${board.title}</a>
