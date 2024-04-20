@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.ch2.dao.FreeBoardLikeMapper">
+	<select id="countAll" resultType="int">
+		SELECT count(*) FROM free_board_like
+	</select>
+	
+	<select id="count" parameterType="map" resultType="int">
+		SELECT count(*) FROM free_board_like WHERE bno = #{bno} and is_liked = #{isLiked}
+	</select>
+
+	<select id="selectAll" resultType="LikeDto">
+		SELECT * FROM free_board_like
+	</select>
+	
+	<select id="select" parameterType="map" resultType="LikeDto">
+		SELECT * FROM free_board_like WHERE bno = #{bno} and nickname = #{nickname}
+	</select>
+	
+	<delete id="deleteAll">
+		DELETE FROM free_board_like
+	</delete>
+	
+	<delete id="delete" parameterType="map">
+		DELETE FROM free_board_like WHERE bno = #{bno} and nickname = #{nickname}
+	</delete>
+	
+	<insert id="insert" parameterType="LikeDto">
+		INSERT INTO free_board_like (bno, nickname, is_liked) VALUES (#{bno}, #{nickname}, #{isLiked})
+	</insert>
+	
+	<update id="update" parameterType="LikeDto">
+		UPDATE free_board_like 
+		SET is_liked = #{isLiked} WHERE bno = #{bno} and nickname = #{nickname}
+	</update>
+</mapper>

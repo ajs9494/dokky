@@ -64,4 +64,14 @@ public class QuestionBoardServiceImpl implements QuestionBoardService {
 	public List<BoardDto> getSearchResult(SearchCondition sc) throws Exception {
 		return questionBoardDao.searchResult(sc);
 	}
+	
+	@Override
+	public int increaseLikecnt(Integer bno) throws Exception {
+		return questionBoardDao.increaseLikecnt(bno);
+	}
+	
+	@Override
+	public int decreaseLikecnt(Integer bno) throws Exception {
+		return questionBoardDao.decreaseLikecnt(bno);
+	}
 }

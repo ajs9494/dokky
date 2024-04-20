@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/3460525fcc.js" crossorigin="anonymous"></script>
     <style>
       #container {
         display: flex;
@@ -52,6 +53,41 @@
       #board-contents {
         min-height: 100px;
         margin-bottom: 30px;
+      }
+      
+      #board-like-cnt {
+      	display: flex;
+      	justify-content: center;
+      	align-items: center;
+      	width: 100%;
+      	height: 70px;
+      }
+      
+      #board-like-btn, #board-dislike-btn {
+      	width: 110px;
+      	height: 60px;
+      	margin: 0 15px;
+      	background-color: white;
+      	font-size: 1.5rem;
+      	cursor: pointer;
+      	border: 1px solid #ccc;
+      }
+      
+      #board-like-btn i {
+      	color: rgba(255, 0, 0, 0.8);
+      }
+      
+      #board-dislike-btn i {
+      	color: rgba(0, 157, 255, 0.6)
+      }
+      
+      #board-like-cnt i {
+      	margin-right: 10px;
+      }
+      
+      .board-chosen {
+      	color: white !important;
+      	background-color: #ccc !important;
       }
 
       #board-btn-cnt {
@@ -294,6 +330,10 @@
         </div>
         <h1 id="board-title">${board.title}</h1>
         <div id="board-contents">${board.contents}</div>
+        <div id="board-like-cnt">
+        	<button type="button" id="board-like-btn" class="noto-sans400"></button>
+        	<button type="button" id="board-dislike-btn" class="noto-sans400"></button>
+        </div>
         <div id="board-btn-cnt">
         	<c:if test="${isWriter==true}">
           		<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/update' : '/questionBoard/update'}" />" method="post" onsubmit="return confirm('게시글을 수정하시겠습니까?')">
@@ -367,6 +407,26 @@
     </div>
     <script>
     	$(document).ready(function() {
+    		$.ajax({
+				type: 'GET',
+				url: '/ch2${whichBoard eq 'free' ? '/freeBoardLike/show/' : '/questionBoardLike/show/'}${board.bno}',
+				headers: { "content-type": "application/json" },
+				success: function(result) {
+					$("#board-like-btn").html('<i class="fa-regular fa-thumbs-up"></i>' + result.likeCnt);
+					$("#board-dislike-btn").html('<i class="fa-regular fa-thumbs-down"></i>' + result.dislikeCnt);
+					if(result.isLiked != undefined) {
+						if(result.isLiked == true) {
+							$("#board-like-btn").addClass("board-chosen");
+						} else {
+							$("#board-dislike-btn").addClass("board-chosen");
+						}
+					}
+				},
+				error: function() {
+					alert("추천, 비추천수를 불러오는데 실패했습니다!");
+				}
+			})
+    		
     		$("#comment-add-btn").click(function() {
     			if(commentContentsCheck($("#comment-add-contents").val())) {
 	    			writeComment();
@@ -426,6 +486,42 @@
     			writeCommentRep(pcno);
     			} else {
     				alert("답글 내용을 작성해 주세요!");
+    			}
+    		})
+    		
+    		$("#board-like-btn").click(function() {
+    			// 로그인 안되어 있으면 메시지 보여줌
+    			if(${hasSessionId}) {
+    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 board-chosen클래스가 있다면 추천을 취소
+    				if($(this).hasClass("board-chosen")) {
+    					// true가 추천, false가 비추천
+    					removeLike(true);
+    					// 사용자가 비추천을 이미 누른 상태면 메시지 보여줌
+    				} else if($(this).siblings().hasClass("board-chosen")) {
+    					alert("이미 비추천한 상태입니다!");
+    				} else {
+	    				addLike(true);
+    				}
+    			} else {
+    				alert("로그인 후에 이용할 수 있습니다!");
+    			}
+    		})
+    		
+    		$("#board-dislike-btn").click(function() {
+    			// 로그인 안되어 있으면 메시지 보여줌
+    			if(${hasSessionId}) {
+    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 board-chosen클래스가 있다면 비추천을 취소
+    				if($(this).hasClass("board-chosen")) {
+    					// true가 추천, false가 비추천
+    					removeLike(false);
+    					// 사용자가 추천을 이미 누른 상태면 메시지 보여줌
+    				} else if($(this).siblings().hasClass("board-chosen")) {
+    					alert("이미 추천한 상태입니다!");
+    				} else {
+	    				addLike(false);
+    				}
+    			} else {
+    				alert("로그인 후에 이용할 수 있습니다!");
     			}
     		})
     	})
@@ -501,6 +597,56 @@
 			})
     	}
     	
+    	let addLike = function(isLiked) {
+    		let like = {
+    				isLiked: isLiked,
+    		}
+    		$.ajax({
+				type: 'POST',
+				url: '/ch2${whichBoard eq 'free' ? '/freeBoardLike/add/' : '/questionBoardLike/add/'}${board.bno}',
+				headers: { "content-type": "application/json" },
+				data: JSON.stringify(like),
+				success: function(result) {
+					$("#board-like-btn").html('<i class="fa-regular fa-thumbs-up"></i>' + result.likeCnt);
+					$("#board-dislike-btn").html('<i class="fa-regular fa-thumbs-down"></i>' + result.dislikeCnt);
+					if(result.isLiked != undefined) {
+						if(result.isLiked == true) {
+							$("#board-like-btn").addClass("board-chosen");
+						} else {
+							$("#board-dislike-btn").addClass("board-chosen");
+						}
+					}
+				},
+				error: function() {
+					alert("추천 또는 비추천 등록에 실패했습니다!");
+				}
+			})
+    	}
+    	
+    	let removeLike = function(isLikeBtn) {
+    		let like = {
+    				isLiked: isLikeBtn,
+    		}
+    		$.ajax({
+				type: 'DELETE',
+				url: '/ch2${whichBoard eq 'free' ? '/freeBoardLike/remove/' : '/questionBoardLike/remove/'}${board.bno}',
+				headers: { "content-type": "application/json" },
+				data: JSON.stringify(like),
+				success: function(result) {
+					$("#board-like-btn").html('<i class="fa-regular fa-thumbs-up"></i>' + result.likeCnt);
+					$("#board-dislike-btn").html('<i class="fa-regular fa-thumbs-down"></i>' + result.dislikeCnt);
+					if(isLikeBtn) {
+						$("#board-like-btn").removeClass("board-chosen");
+					} else {
+						$("#board-dislike-btn").removeClass("board-chosen");
+					}
+				},
+				error: function() {
+					alert("추천 또는 비추천 등록에 실패했습니다!");
+				}
+			})
+    	}
+    	
     	let toHtml = function(comments) {
     		let tmp = '<div id="comment-count">' + comments.length + '개의 댓글</div>' + '<ul>';
     		
@@ -560,3 +706,4 @@
     </script>
   </body>
 </html>
+

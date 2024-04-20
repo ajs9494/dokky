@@ -84,6 +84,16 @@ public class QuestionBoardDaoImpl implements QuestionBoardDao {
 	}
 	
 	@Override
+	public int increaseLikecnt(Integer bno) throws Exception {
+		return session.update(namespace + "increaseLikecnt", bno);
+	}
+	
+	@Override
+	public int decreaseLikecnt(Integer bno) throws Exception {
+		return session.update(namespace + "decreaseLikecnt", bno);
+	}
+	
+	@Override
 	public int searchResultCnt(SearchCondition sc) throws Exception {
 		return session.selectOne(namespace + "searchResultCnt", sc);
 	}

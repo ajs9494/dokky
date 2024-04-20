@@ -33,4 +33,8 @@ public interface QuestionBoardDao {
 
 	List<BoardDto> searchResult(SearchCondition sc) throws Exception;
 
+	int increaseLikecnt(Integer bno) throws Exception;
+
+	int decreaseLikecnt(Integer bno) throws Exception;
+
 }

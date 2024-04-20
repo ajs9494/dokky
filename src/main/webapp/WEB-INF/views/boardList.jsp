@@ -25,7 +25,7 @@
 <style>
 #container {
 	display: flex;
-	width: 1000px;
+	width: 1100px;
 	height: 1000px;
 	margin: auto;
 	flex-direction: column;
@@ -72,11 +72,11 @@
 }
 
 .col-bno {
-	width: 13%;
+	width: 11%;
 }
 
 .col-title {
-	width: 48%;
+	width: 45%;
 }
 
 .col-writer {
@@ -88,7 +88,11 @@
 }
 
 .col-viewcnt {
-	width: 12%;
+	width: 10%;
+}
+
+.col-likecnt {
+	width: 7%;
 }
 
 #write-btn-cnt {
@@ -227,6 +231,7 @@
 					<col class="col-writer" />
 					<col class="col-regdate" />
 					<col class="col-viewcnt" />
+					<col class="col-likecnt" />
 				</colgroup>
 				<thead>
 					<tr>
@@ -235,6 +240,7 @@
 						<th>글쓴이</th>
 						<th>등록일</th>
 						<th>조회수</th>
+						<th>추천</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -263,6 +269,7 @@
 									</c:otherwise>
 								</c:choose></td>
 							<td>${board.viewcnt}</td>
+							<td>${board.likecnt}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

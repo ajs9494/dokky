@@ -9,6 +9,7 @@ public class BoardDto {
 	private String contents;
 	private Integer viewcnt;
 	private Integer ccnt;
+	private Integer likecnt;
 	private Date regdate;
 	
 	public BoardDto() { this("","",""); }
@@ -18,6 +19,15 @@ public class BoardDto {
 		this.title = title;
 		this.writer = writer;
 		this.contents = contents;
+	}
+
+	
+	public Integer getLikecnt() {
+		return likecnt;
+	}
+
+	public void setLikecnt(Integer likecnt) {
+		this.likecnt = likecnt;
 	}
 
 	public Integer getBno() {
@@ -78,8 +88,9 @@ public class BoardDto {
 
 	@Override
 	public String toString() {
-		return "FreeBoardDto [bno=" + bno + ", title=" + title + ", writer=" + writer + ", contents=" + contents
-				+ ", viewcnt=" + viewcnt + ", ccnt=" + ccnt + ", regdate=" + regdate + "]";
+		return "BoardDto [bno=" + bno + ", title=" + title + ", writer=" + writer + ", contents=" + contents
+				+ ", viewcnt=" + viewcnt + ", ccnt=" + ccnt + ", likecnt=" + likecnt
+				+ ", regdate=" + regdate + "]";
 	}
 
 	@Override

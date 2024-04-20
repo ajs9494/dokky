@@ -3,7 +3,9 @@ package com.fastcampus.ch2.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fastcampus.ch2.dao.FreeBoardDao;
 import com.fastcampus.ch2.domain.BoardDto;
@@ -63,5 +65,15 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public List<BoardDto> getSearchResult(SearchCondition sc) throws Exception {
 		return freeBoardDao.searchResult(sc);
+	}
+	
+	@Override
+	public int increaseLikecnt(Integer bno) throws Exception {
+		return freeBoardDao.increaseLikecnt(bno);
+	}
+	
+	@Override
+	public int decreaseLikecnt(Integer bno) throws Exception {
+		return freeBoardDao.decreaseLikecnt(bno);
 	}
 }

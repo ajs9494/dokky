@@ -27,4 +27,8 @@ public interface FreeBoardService {
 
 	List<BoardDto> getSearchResult(SearchCondition sc) throws Exception;
 
+	int increaseLikecnt(Integer bno) throws Exception;
+
+	int decreaseLikecnt(Integer bno) throws Exception;
+
 }

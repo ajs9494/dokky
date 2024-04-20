@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fastcampus.ch2.dao.FreeBoardLikeDaoImpl;
 import com.fastcampus.ch2.domain.BoardDto;
+import com.fastcampus.ch2.domain.LikeDto;
 import com.fastcampus.ch2.service.FreeBoardService;
 import com.fastcampus.ch2.service.QuestionBoardService;
 

@@ -3,10 +3,15 @@
 		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
 	<typeAliases>
 		<typeAlias alias="UserDto" type="com.fastcampus.ch2.domain.UserDto"/>
 		<typeAlias alias="BoardDto" type="com.fastcampus.ch2.domain.BoardDto"/>
 		<typeAlias alias="SearchCondition" type="com.fastcampus.ch2.domain.SearchCondition"/>
 		<typeAlias alias="CommentDto" type="com.fastcampus.ch2.domain.CommentDto"/>
+		<typeAlias alias="LikeDto" type="com.fastcampus.ch2.domain.LikeDto"/>
 	</typeAliases>
 </configuration>

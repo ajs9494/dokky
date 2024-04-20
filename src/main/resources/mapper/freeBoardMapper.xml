@@ -51,6 +51,16 @@
 		SET ccnt = ccnt - 1 WHERE bno = #{bno}
 	</update>
 	
+	<update id="increaseLikecnt" parameterType="int">
+		UPDATE free_board 
+		SET likecnt = likecnt + 1 WHERE bno = #{bno}
+	</update>
+	
+	<update id="decreaseLikecnt" parameterType="int">
+		UPDATE free_board 
+		SET likecnt = likecnt - 1 WHERE bno = #{bno}
+	</update>
+	
 	<sql id="searchCondition">
 		<choose>
 			<when test='option.equals("T")'>
