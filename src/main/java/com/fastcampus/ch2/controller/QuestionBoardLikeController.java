@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fastcampus.ch2.domain.CommentDto;
-import com.fastcampus.ch2.domain.LikeDto;
+import com.fastcampus.ch2.domain.BoardLikeDto;
 import com.fastcampus.ch2.service.QuestionBoardLikeService;
 import com.fastcampus.ch2.service.UserService;
 
@@ -45,7 +45,7 @@ public class QuestionBoardLikeController {
 				String id = (String)session.getAttribute("id");
 				if(id != null) {
 					String nickname = userService.getUser(id).getNickname();
-					LikeDto likeDto = questionBoardLikeService.getLike(bno, nickname);
+					BoardLikeDto likeDto = questionBoardLikeService.getLike(bno, nickname);
 					if(likeDto != null) {
 						map.put("isLiked", likeDto.getIsLiked());
 					}
@@ -59,7 +59,7 @@ public class QuestionBoardLikeController {
 	}
 	
 	@PostMapping("/add/{bno}")
-	public ResponseEntity<Map<String, Object>> addLike(@PathVariable Integer bno, HttpServletRequest request, @RequestBody LikeDto likeDto) {
+	public ResponseEntity<Map<String, Object>> addLike(@PathVariable Integer bno, HttpServletRequest request, @RequestBody BoardLikeDto likeDto) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			HttpSession session = request.getSession(false);
@@ -86,7 +86,7 @@ public class QuestionBoardLikeController {
 	}
 	
 	@DeleteMapping("/remove/{bno}")
-	public ResponseEntity<Map<String, Object>> removeLike(@PathVariable Integer bno, HttpServletRequest request, @RequestBody LikeDto likeDto) {
+	public ResponseEntity<Map<String, Object>> removeLike(@PathVariable Integer bno, HttpServletRequest request, @RequestBody BoardLikeDto likeDto) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			HttpSession session = request.getSession(false);

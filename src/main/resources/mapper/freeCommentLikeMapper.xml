@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.ch2.dao.FreeCommentLikeMapper">
+	<select id="countAll" resultType="int">
+		SELECT count(*) FROM free_comment_like
+	</select>
+	
+	<select id="count" parameterType="map" resultType="int">
+		SELECT count(*) FROM free_comment_like WHERE cno = #{cno} and is_liked = #{isLiked}
+	</select>
+
+	<select id="selectAll" resultType="CommentLikeDto">
+		SELECT * FROM free_comment_like
+	</select>
+	
+	<select id="select" parameterType="map" resultType="CommentLikeDto">
+		SELECT * FROM free_comment_like WHERE cno = #{cno} and nickname = #{nickname}
+	</select>
+	
+	<delete id="deleteAll">
+		DELETE FROM free_comment_like
+	</delete>
+	
+	<delete id="delete" parameterType="map">
+		DELETE FROM free_comment_like WHERE cno = #{cno} and nickname = #{nickname}
+	</delete>
+	
+	<insert id="insert" parameterType="CommentLikeDto">
+		INSERT INTO free_comment_like (cno, nickname, is_liked) VALUES (#{cno}, #{nickname}, #{isLiked})
+	</insert>
+	
+	<update id="update" parameterType="CommentLikeDto">
+		UPDATE free_comment_like 
+		SET is_liked = #{isLiked} WHERE cno = #{cno} and nickname = #{nickname}
+	</update>
+</mapper>

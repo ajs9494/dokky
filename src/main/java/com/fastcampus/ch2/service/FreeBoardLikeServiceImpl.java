@@ -11,7 +11,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fastcampus.ch2.dao.FreeBoardLikeDao;
 import com.fastcampus.ch2.dao.FreeBoardLikeDaoImpl;
-import com.fastcampus.ch2.domain.LikeDto;
+import com.fastcampus.ch2.domain.BoardLikeDto;
 
 @Service
 public class FreeBoardLikeServiceImpl implements FreeBoardLikeService {
@@ -33,12 +33,12 @@ public class FreeBoardLikeServiceImpl implements FreeBoardLikeService {
 	}
 	
 	@Override
-	public List<LikeDto> getLikes() throws Exception {
+	public List<BoardLikeDto> getLikes() throws Exception {
 		return freeBoardLikeDao.selectAll();
 	}
 	
 	@Override
-	public LikeDto getLike(Integer bno, String nickname) throws Exception {
+	public BoardLikeDto getLike(Integer bno, String nickname) throws Exception {
 		return freeBoardLikeDao.select(bno, nickname);
 	}
 	
@@ -48,7 +48,7 @@ public class FreeBoardLikeServiceImpl implements FreeBoardLikeService {
 	}
 	
 	@Override
-	public int removeLike(LikeDto likeDto) throws Exception {
+	public int removeLike(BoardLikeDto likeDto) throws Exception {
 		TransactionStatus status = tm.getTransaction(new DefaultTransactionDefinition());
 		try {
 			if(likeDto.getIsLiked()) {
@@ -68,7 +68,7 @@ public class FreeBoardLikeServiceImpl implements FreeBoardLikeService {
 	}
 	
 	@Override
-	public int addLike(LikeDto likeDto) throws Exception {
+	public int addLike(BoardLikeDto likeDto) throws Exception {
 		TransactionStatus status = tm.getTransaction(new DefaultTransactionDefinition());
 		try {
 			if(likeDto.getIsLiked()) {
@@ -88,7 +88,7 @@ public class FreeBoardLikeServiceImpl implements FreeBoardLikeService {
 	}
 	
 	@Override
-	public int modifyLike(LikeDto likeDto) throws Exception {
+	public int modifyLike(BoardLikeDto likeDto) throws Exception {
 		return freeBoardLikeDao.update(likeDto);
 	}
 }

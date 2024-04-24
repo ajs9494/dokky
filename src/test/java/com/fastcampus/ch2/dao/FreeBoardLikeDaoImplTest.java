@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fastcampus.ch2.domain.BoardDto;
-import com.fastcampus.ch2.domain.LikeDto;
+import com.fastcampus.ch2.domain.BoardLikeDto;
 import com.fastcampus.ch2.domain.UserDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,7 +40,7 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		freeBoardLikeDao.insert(new LikeDto(bno, "글쓴이2", true));
+		freeBoardLikeDao.insert(new BoardLikeDto(bno, "글쓴이2", true));
 		assertTrue(freeBoardLikeDao.countAll() == 1);
 	}
 	
@@ -58,15 +58,15 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		freeBoardLikeDao.insert(new LikeDto(bno, "글쓴이2", true));
+		freeBoardLikeDao.insert(new BoardLikeDto(bno, "글쓴이2", true));
 		assertTrue(freeBoardLikeDao.count(bno, true) == 1);
 		assertTrue(freeBoardLikeDao.count(bno, false) == 0);
 		
 		freeBoardLikeDao.deleteAll();
 		assertTrue(freeBoardLikeDao.countAll() == 0);
 		
-		freeBoardLikeDao.insert(new LikeDto(bno, "글쓴이", false));
-		freeBoardLikeDao.insert(new LikeDto(bno, "글쓴이2", false));
+		freeBoardLikeDao.insert(new BoardLikeDto(bno, "글쓴이", false));
+		freeBoardLikeDao.insert(new BoardLikeDto(bno, "글쓴이2", false));
 		assertTrue(freeBoardLikeDao.count(bno, true) == 0);
 		assertTrue(freeBoardLikeDao.count(bno, false) == 2);
 	}
@@ -85,12 +85,12 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		LikeDto likeDto = new LikeDto(bno, "글쓴이", true);
+		BoardLikeDto likeDto = new BoardLikeDto(bno, "글쓴이", true);
 		assertTrue(freeBoardLikeDao.insert(likeDto) == 1);
 		
 		assertTrue(freeBoardLikeDao.selectAll().size() == 1);
 		
-		LikeDto likeDto2 = new LikeDto(bno, "글쓴이2", true);
+		BoardLikeDto likeDto2 = new BoardLikeDto(bno, "글쓴이2", true);
 		assertTrue(freeBoardLikeDao.insert(likeDto2) == 1);
 		
 		assertTrue(freeBoardLikeDao.selectAll().size() == 2);
@@ -110,15 +110,15 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		LikeDto likeDto = new LikeDto(bno, "글쓴이", true);
+		BoardLikeDto likeDto = new BoardLikeDto(bno, "글쓴이", true);
 		assertTrue(freeBoardLikeDao.insert(likeDto) == 1);
-		LikeDto likeDto2 = new LikeDto(bno, "글쓴이2", false);
+		BoardLikeDto likeDto2 = new BoardLikeDto(bno, "글쓴이2", false);
 		assertTrue(freeBoardLikeDao.insert(likeDto2) == 1);
 		
-		LikeDto selectedLikeDto = freeBoardLikeDao.select(bno, "글쓴이");
+		BoardLikeDto selectedLikeDto = freeBoardLikeDao.select(bno, "글쓴이");
 		assertTrue(selectedLikeDto.equals(likeDto));
 		
-		LikeDto selectedLikeDto2 = freeBoardLikeDao.select(bno, "글쓴이2");
+		BoardLikeDto selectedLikeDto2 = freeBoardLikeDao.select(bno, "글쓴이2");
 		assertTrue(selectedLikeDto2.equals(likeDto2));
 	}
 	
@@ -136,9 +136,9 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		LikeDto likeDto = new LikeDto(bno, "글쓴이", true);
+		BoardLikeDto likeDto = new BoardLikeDto(bno, "글쓴이", true);
 		assertTrue(freeBoardLikeDao.insert(likeDto) == 1);
-		LikeDto likeDto2 = new LikeDto(bno, "글쓴이2", false);
+		BoardLikeDto likeDto2 = new BoardLikeDto(bno, "글쓴이2", false);
 		assertTrue(freeBoardLikeDao.insert(likeDto2) == 1);
 		
 		assertTrue(freeBoardLikeDao.countAll() == 2);
@@ -160,16 +160,16 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		LikeDto likeDto = new LikeDto(bno, "글쓴이", true);
+		BoardLikeDto likeDto = new BoardLikeDto(bno, "글쓴이", true);
 		assertTrue(freeBoardLikeDao.insert(likeDto) == 1);
-		LikeDto likeDto2 = new LikeDto(bno, "글쓴이2", false);
+		BoardLikeDto likeDto2 = new BoardLikeDto(bno, "글쓴이2", false);
 		assertTrue(freeBoardLikeDao.insert(likeDto2) == 1);
 		assertTrue(freeBoardLikeDao.countAll() == 2);
 		
 		assertTrue(freeBoardLikeDao.delete(bno, "글쓴이") == 1);
 		assertTrue(freeBoardLikeDao.countAll() == 1);
 		
-		LikeDto deletedLikeDto2 = freeBoardLikeDao.select(bno, "글쓴이2");
+		BoardLikeDto deletedLikeDto2 = freeBoardLikeDao.select(bno, "글쓴이2");
 		assertTrue(deletedLikeDto2.equals(likeDto2));
 	}
 	
@@ -187,17 +187,17 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		LikeDto likeDto = new LikeDto(bno, "글쓴이", true);
+		BoardLikeDto likeDto = new BoardLikeDto(bno, "글쓴이", true);
 		assertTrue(freeBoardLikeDao.insert(likeDto) == 1);
 		assertTrue(freeBoardLikeDao.countAll() == 1);
-		LikeDto likeDto2 = new LikeDto(bno, "글쓴이2", false);
+		BoardLikeDto likeDto2 = new BoardLikeDto(bno, "글쓴이2", false);
 		assertTrue(freeBoardLikeDao.insert(likeDto2) == 1);
 		assertTrue(freeBoardLikeDao.countAll() == 2);
 		
-		LikeDto insertedLikeDto = freeBoardLikeDao.select(bno, "글쓴이");
+		BoardLikeDto insertedLikeDto = freeBoardLikeDao.select(bno, "글쓴이");
 		assertTrue(insertedLikeDto.equals(likeDto));
 		
-		LikeDto insertedLikeDto2 = freeBoardLikeDao.select(bno, "글쓴이2");
+		BoardLikeDto insertedLikeDto2 = freeBoardLikeDao.select(bno, "글쓴이2");
 		assertTrue(insertedLikeDto2.equals(likeDto2));
 	}
 	
@@ -215,13 +215,13 @@ public class FreeBoardLikeDaoImplTest {
 		freeBoardDao.insert(new BoardDto("제목", "글쓴이", "내용"));
 		assertTrue(freeBoardDao.count() == 1);
 		Integer bno = freeBoardDao.selectAll().get(0).getBno();
-		LikeDto likeDto = new LikeDto(bno, "글쓴이", true);
+		BoardLikeDto likeDto = new BoardLikeDto(bno, "글쓴이", true);
 		assertTrue(freeBoardLikeDao.insert(likeDto) == 1);
 		
-		LikeDto likeDto2 = new LikeDto(bno, "글쓴이", false);
+		BoardLikeDto likeDto2 = new BoardLikeDto(bno, "글쓴이", false);
 		assertTrue(freeBoardLikeDao.update(likeDto2) == 1);
 		
-		LikeDto updatedLikeDto = freeBoardLikeDao.select(bno, "글쓴이");
+		BoardLikeDto updatedLikeDto = freeBoardLikeDao.select(bno, "글쓴이");
 		assertTrue(updatedLikeDto.equals(likeDto2));
 	}
 }

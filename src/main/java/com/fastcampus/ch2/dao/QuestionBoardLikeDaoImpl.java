@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fastcampus.ch2.domain.LikeDto;
+import com.fastcampus.ch2.domain.BoardLikeDto;
 
 @Repository
 public class QuestionBoardLikeDaoImpl implements QuestionBoardLikeDao {
@@ -31,12 +31,12 @@ public class QuestionBoardLikeDaoImpl implements QuestionBoardLikeDao {
 	}
 	
 	@Override
-	public List<LikeDto> selectAll() throws Exception {
+	public List<BoardLikeDto> selectAll() throws Exception {
 		return session.selectList(namespace + "selectAll");
 	}
 	
 	@Override
-	public LikeDto select(Integer bno, String nickname) throws Exception {
+	public BoardLikeDto select(Integer bno, String nickname) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("bno", bno);
 		map.put("nickname", nickname);
@@ -57,12 +57,12 @@ public class QuestionBoardLikeDaoImpl implements QuestionBoardLikeDao {
 	}
 	
 	@Override
-	public int insert(LikeDto like) throws Exception {
+	public int insert(BoardLikeDto like) throws Exception {
 		return session.insert(namespace + "insert", like);
 	}
 	
 	@Override
-	public int update(LikeDto like) throws Exception {
+	public int update(BoardLikeDto like) throws Exception {
 		return session.update(namespace + "update", like);
 	}
 }

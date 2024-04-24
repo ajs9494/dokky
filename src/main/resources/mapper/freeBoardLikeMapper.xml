@@ -11,11 +11,11 @@
 		SELECT count(*) FROM free_board_like WHERE bno = #{bno} and is_liked = #{isLiked}
 	</select>
 
-	<select id="selectAll" resultType="LikeDto">
+	<select id="selectAll" resultType="BoardLikeDto">
 		SELECT * FROM free_board_like
 	</select>
 	
-	<select id="select" parameterType="map" resultType="LikeDto">
+	<select id="select" parameterType="map" resultType="BoardLikeDto">
 		SELECT * FROM free_board_like WHERE bno = #{bno} and nickname = #{nickname}
 	</select>
 	
@@ -27,11 +27,11 @@
 		DELETE FROM free_board_like WHERE bno = #{bno} and nickname = #{nickname}
 	</delete>
 	
-	<insert id="insert" parameterType="LikeDto">
+	<insert id="insert" parameterType="BoardLikeDto">
 		INSERT INTO free_board_like (bno, nickname, is_liked) VALUES (#{bno}, #{nickname}, #{isLiked})
 	</insert>
 	
-	<update id="update" parameterType="LikeDto">
+	<update id="update" parameterType="BoardLikeDto">
 		UPDATE free_board_like 
 		SET is_liked = #{isLiked} WHERE bno = #{bno} and nickname = #{nickname}
 	</update>

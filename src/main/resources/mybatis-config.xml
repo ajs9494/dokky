@@ -12,6 +12,7 @@
 		<typeAlias alias="BoardDto" type="com.fastcampus.ch2.domain.BoardDto"/>
 		<typeAlias alias="SearchCondition" type="com.fastcampus.ch2.domain.SearchCondition"/>
 		<typeAlias alias="CommentDto" type="com.fastcampus.ch2.domain.CommentDto"/>
-		<typeAlias alias="LikeDto" type="com.fastcampus.ch2.domain.LikeDto"/>
+		<typeAlias alias="BoardLikeDto" type="com.fastcampus.ch2.domain.BoardLikeDto"/>
+		<typeAlias alias="CommentLikeDto" type="com.fastcampus.ch2.domain.CommentLikeDto"/>
 	</typeAliases>
 </configuration>

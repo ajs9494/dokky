@@ -8,14 +8,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fastcampus.ch2.domain.BoardLikeDto;
+import com.fastcampus.ch2.domain.CommentLikeDto;
 
 @Repository
-public class FreeBoardLikeDaoImpl implements FreeBoardLikeDao {
+public class FreeCommentLikeDaoImpl implements FreeCommentLikeDao {
 	@Autowired
 	private SqlSession session;
 	
-	private static String namespace = "com.fastcampus.ch2.dao.FreeBoardLikeMapper.";
+	private static String namespace = "com.fastcampus.ch2.dao.FreeCommentLikeMapper.";
 	
 	@Override
 	public int countAll() throws Exception {
@@ -23,22 +23,22 @@ public class FreeBoardLikeDaoImpl implements FreeBoardLikeDao {
 	}
 	
 	@Override
-	public int count(Integer bno, boolean isLiked) throws Exception {
+	public int count(Integer cno, boolean isLiked) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("bno", bno);
+		map.put("cno", cno);
 		map.put("isLiked", isLiked);
 		return session.selectOne(namespace + "count", map);
 	}
 	
 	@Override
-	public List<BoardLikeDto> selectAll() throws Exception {
+	public List<CommentLikeDto> selectAll() throws Exception {
 		return session.selectList(namespace + "selectAll");
 	}
 	
 	@Override
-	public BoardLikeDto select(Integer bno, String nickname) throws Exception {
+	public CommentLikeDto select(Integer cno, String nickname) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("bno", bno);
+		map.put("cno", cno);
 		map.put("nickname", nickname);
 		return session.selectOne(namespace + "select", map);
 	}
@@ -49,20 +49,20 @@ public class FreeBoardLikeDaoImpl implements FreeBoardLikeDao {
 	}
 	
 	@Override
-	public int delete(Integer bno, String nickname) throws Exception {
+	public int delete(Integer cno, String nickname) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("bno", bno);
+		map.put("cno", cno);
 		map.put("nickname", nickname);
 		return session.delete(namespace + "delete", map);
 	}
 	
 	@Override
-	public int insert(BoardLikeDto like) throws Exception {
+	public int insert(CommentLikeDto like) throws Exception {
 		return session.insert(namespace + "insert", like);
 	}
 	
 	@Override
-	public int update(BoardLikeDto like) throws Exception {
+	public int update(CommentLikeDto like) throws Exception {
 		return session.update(namespace + "update", like);
 	}
 }

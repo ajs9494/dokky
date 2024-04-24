@@ -52,7 +52,7 @@
 
       #board-contents {
         min-height: 100px;
-        margin-bottom: 30px;
+        margin-bottom: 50px;
       }
       
       #board-like-cnt {
@@ -61,6 +61,7 @@
       	align-items: center;
       	width: 100%;
       	height: 70px;
+      	margin-bottom: 50px;
       }
       
       #board-like-btn, #board-dislike-btn {
@@ -85,7 +86,7 @@
       	margin-right: 10px;
       }
       
-      .board-chosen {
+      .like-chosen {
       	color: white !important;
       	background-color: #ccc !important;
       }
@@ -135,6 +136,34 @@
         border-top: 1px solid #ccc;
       }
       
+      .comment-writer-like-cnt {
+      	display: flex;
+      	justify-content: space-between;
+      }
+      
+      .comment-like-cnt i {
+      	margin-right: 5px;
+      }
+      
+      .comment-like-btn, .comment-dislike-btn {
+      	width: 50px;
+      	height: 30px;
+      	margin: 0 5px;
+      	background-color: white;
+      	font-size: 1.1rem;
+      	cursor: pointer;
+      	border: 1px solid #ccc;
+      	padding: 5px;
+      }
+      
+      .comment-like-btn i {
+      	color: rgba(255, 0, 0, 0.8);
+      }
+      
+      .comment-dislike-btn i {
+      	color: rgba(0, 157, 255, 0.6)
+      }
+     
       .comment-rep {
       	margin-left: 30px;
       	padding-left: 20px;
@@ -153,6 +182,7 @@
         flex-direction: row-reverse;
         font-size: 0.8rem;
         height: 17px;
+        margin-right: 10px;
       }
 
       .comment-btn-cnt > a {
@@ -356,7 +386,9 @@
         <ul>
         <c:forEach var="comment" items="${comments}">
           <li class="${comment.cno == comment.pcno ? 'comment' : 'comment comment-rep'}" data-cno="${comment.cno}" data-pcno="${comment.pcno}">
-            <div class="comment-writer">${comment.writer}</div>
+          	<div class="comment-writer-like-cnt"><div class="comment-writer">${comment.writer}</div>
+          	<div class="comment-like-cnt"><button type="button" class="comment-like-btn"></button><button type="button" class="comment-dislike-btn"></button></div>
+          	</div>
             <div class="comment-regdate"><fmt:formatDate value="${comment.regdate}" pattern="yyyy-MM-dd HH:mm" type="both"/></div>
             <div class="comment-contents">${comment.contents}</div>
             <div class="comment-btn-cnt">
@@ -416,9 +448,9 @@
 					$("#board-dislike-btn").html('<i class="fa-regular fa-thumbs-down"></i>' + result.dislikeCnt);
 					if(result.isLiked != undefined) {
 						if(result.isLiked == true) {
-							$("#board-like-btn").addClass("board-chosen");
+							$("#board-like-btn").addClass("like-chosen");
 						} else {
-							$("#board-dislike-btn").addClass("board-chosen");
+							$("#board-dislike-btn").addClass("like-chosen");
 						}
 					}
 				},
@@ -426,6 +458,8 @@
 					alert("추천, 비추천수를 불러오는데 실패했습니다!");
 				}
 			})
+			
+			showCommentLike();
     		
     		$("#comment-add-btn").click(function() {
     			if(commentContentsCheck($("#comment-add-contents").val())) {
@@ -492,12 +526,12 @@
     		$("#board-like-btn").click(function() {
     			// 로그인 안되어 있으면 메시지 보여줌
     			if(${hasSessionId}) {
-    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 board-chosen클래스가 있다면 추천을 취소
-    				if($(this).hasClass("board-chosen")) {
+    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 추천을 취소
+    				if($(this).hasClass("like-chosen")) {
     					// true가 추천, false가 비추천
     					removeLike(true);
     					// 사용자가 비추천을 이미 누른 상태면 메시지 보여줌
-    				} else if($(this).siblings().hasClass("board-chosen")) {
+    				} else if($(this).siblings().hasClass("like-chosen")) {
     					alert("이미 비추천한 상태입니다!");
     				} else {
 	    				addLike(true);
@@ -510,15 +544,53 @@
     		$("#board-dislike-btn").click(function() {
     			// 로그인 안되어 있으면 메시지 보여줌
     			if(${hasSessionId}) {
-    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 board-chosen클래스가 있다면 비추천을 취소
-    				if($(this).hasClass("board-chosen")) {
+    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 비추천을 취소
+    				if($(this).hasClass("like-chosen")) {
     					// true가 추천, false가 비추천
     					removeLike(false);
     					// 사용자가 추천을 이미 누른 상태면 메시지 보여줌
-    				} else if($(this).siblings().hasClass("board-chosen")) {
+    				} else if($(this).siblings().hasClass("like-chosen")) {
     					alert("이미 추천한 상태입니다!");
     				} else {
 	    				addLike(false);
+    				}
+    			} else {
+    				alert("로그인 후에 이용할 수 있습니다!");
+    			}
+    		})
+    		
+    		$("#comment-box").on("click", ".comment-like-btn", function(e) {
+    			let cno = $(e.target).closest(".comment").data("cno");
+    			// 로그인 안되어 있으면 메시지 보여줌
+    			if(${hasSessionId}) {
+    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 추천을 취소
+    				if($(this).hasClass("like-chosen")) {
+    					removeCommentLike(cno);
+    					// 사용자가 비추천을 이미 누른 상태면 메시지 보여줌
+    				} else if($(this).siblings().hasClass("like-chosen")) {
+    					alert("이미 비추천한 상태입니다!");
+    				} else {
+    					// true가 추천, false가 비추천
+    					addCommentLike(cno, true);
+    				}
+    			} else {
+    				alert("로그인 후에 이용할 수 있습니다!");
+    			}
+    		})
+    		
+    		$("#comment-box").on("click", ".comment-dislike-btn", function(e) {
+    			let cno = $(e.target).closest(".comment").data("cno");
+    			// 로그인 안되어 있으면 메시지 보여줌
+    			if(${hasSessionId}) {
+    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 비추천을 취소
+    				if($(this).hasClass("like-chosen")) {
+    					removeCommentLike(cno);
+    					// 사용자가 추천을 이미 누른 상태면 메시지 보여줌
+    				} else if($(this).siblings().hasClass("like-chosen")) {
+    					alert("이미 추천한 상태입니다!");
+    				} else {
+    					// true가 추천, false가 비추천
+    					addCommentLike(cno, false);
     				}
     			} else {
     				alert("로그인 후에 이용할 수 있습니다!");
@@ -536,6 +608,7 @@
 				success: function(result) {
 					$("#comment-box").html(toHtml(result));
 					$("#comment-add-contents").val("");
+					showCommentLike();
 				},
 				error: function() {
 					alert("댓글 등록에 실패했습니다! 다시 시도해 주세요!");
@@ -555,6 +628,7 @@
 				data: JSON.stringify(comment),
 				success: function(result) {
 					$("#comment-box").html(toHtml(result));
+					showCommentLike();
 				},
 				error: function() {
 					alert("답글 등록에 실패했습니다! 다시 시도해 주세요!");
@@ -569,6 +643,7 @@
 				headers: { "content-type": "application/json" },
 				success: function(result) {
 					$("#comment-box").html(toHtml(result));
+					showCommentLike();
 				},
 				error: function() {
 					alert("댓글 삭제에 실패했습니다! 다시 시도해 주세요!");
@@ -590,6 +665,7 @@
 				data: JSON.stringify(comment),
 				success: function(result) {
 					$("#comment-box").html(toHtml(result));
+					showCommentLike();
 				},
 				error: function() {
 					alert("댓글 수정에 실패했습니다! 다시 시도해 주세요!");
@@ -611,9 +687,9 @@
 					$("#board-dislike-btn").html('<i class="fa-regular fa-thumbs-down"></i>' + result.dislikeCnt);
 					if(result.isLiked != undefined) {
 						if(result.isLiked == true) {
-							$("#board-like-btn").addClass("board-chosen");
+							$("#board-like-btn").addClass("like-chosen");
 						} else {
-							$("#board-dislike-btn").addClass("board-chosen");
+							$("#board-dislike-btn").addClass("like-chosen");
 						}
 					}
 				},
@@ -636,13 +712,75 @@
 					$("#board-like-btn").html('<i class="fa-regular fa-thumbs-up"></i>' + result.likeCnt);
 					$("#board-dislike-btn").html('<i class="fa-regular fa-thumbs-down"></i>' + result.dislikeCnt);
 					if(isLikeBtn) {
-						$("#board-like-btn").removeClass("board-chosen");
+						$("#board-like-btn").removeClass("like-chosen");
 					} else {
-						$("#board-dislike-btn").removeClass("board-chosen");
+						$("#board-dislike-btn").removeClass("like-chosen");
 					}
 				},
 				error: function() {
+					alert("추천 또는 비추천 취소에 실패했습니다!");
+				}
+			})
+    	}
+    	
+    	let showCommentLike = function() {
+    		$.ajax({
+				type: 'GET',
+				url: '/ch2${whichBoard eq 'free' ? '/freeCommentLike/show/' : '/questionCommentLike/show/'}${board.bno}',
+				headers: { "content-type": "application/json" },
+				success: function(result) {
+					result.forEach(function(like, index) {
+					$("#comment-box > ul > li:nth-child(" + (index + 1) + ") .comment-like-cnt").html('<button type="button" class="comment-like-btn"><i class="fa-regular fa-thumbs-up"></i>' + like.likeCnt + '</button><button type="button" class="comment-dislike-btn"><i class="fa-regular fa-thumbs-down"></i>' + like.dislikeCnt + '</button>');
+					if(like.isLiked != undefined) {
+						if(like.isLiked == true) {
+							$("#comment-box > ul > li:nth-child(" + (index + 1) + ") .comment-like-btn").addClass("like-chosen");
+						} else {
+							$("#comment-box > ul > li:nth-child(" + (index + 1) + ") .comment-dislike-btn").addClass("like-chosen");
+						}
+					}
+					})
+				},
+				error: function() {
+					alert("추천, 비추천수를 불러오는데 실패했습니다!");
+				}
+			})
+    	}
+    	
+    	let addCommentLike = function(cno, isLiked) {
+    		let like = {
+    				cno: cno,
+    				isLiked: isLiked,
+    		}
+    		$.ajax({
+				type: 'POST',
+				url: '/ch2${whichBoard eq 'free' ? '/freeCommentLike/add/' : '/questionCommentLike/add/'}' + cno,
+				headers: { "content-type": "application/json" },
+				data: JSON.stringify(like),
+				success: function(result) {
+					showCommentLike();
+				},
+				error: function() {
 					alert("추천 또는 비추천 등록에 실패했습니다!");
+					showCommentLike();
+				}
+			})
+    	}
+    	
+    	let removeCommentLike = function(cno) {
+    		let like = {
+    				cno: cno
+    		}
+    		$.ajax({
+				type: 'DELETE',
+				url: '/ch2${whichBoard eq 'free' ? '/freeCommentLike/remove/' : '/questionCommentLike/remove/'}' + cno,
+				headers: { "content-type": "application/json" },
+				data: JSON.stringify(like),
+				success: function(result) {
+					showCommentLike();
+				},
+				error: function() {
+					alert("추천 또는 비추천 취소에 실패했습니다!");
+					showCommentLike();
 				}
 			})
     	}
@@ -683,7 +821,9 @@
     			}
     			tmp += ' data-cno=' + comment.cno;
     			tmp += ' data-pcno=' + comment.pcno + '>';
+    			tmp += '<div class="comment-writer-like-cnt">';
     			tmp += '<div class="comment-writer">' + comment.writer + '</div>';
+    			tmp += '<div class="comment-like-cnt"><button type="button" class="comment-like-btn"></button><button type="button" class="comment-dislike-btn"></button></div></div>';
     			tmp += '<div class="comment-regdate">' + dateTime + '</div>';
     			tmp += '<div class="comment-contents">' + comment.contents + '</div>';
     			tmp += '<div class="comment-btn-cnt">';
