@@ -526,15 +526,20 @@
     		$("#board-like-btn").click(function() {
     			// 로그인 안되어 있으면 메시지 보여줌
     			if(${hasSessionId}) {
-    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 추천을 취소
-    				if($(this).hasClass("like-chosen")) {
-    					// true가 추천, false가 비추천
-    					removeLike(true);
-    					// 사용자가 비추천을 이미 누른 상태면 메시지 보여줌
-    				} else if($(this).siblings().hasClass("like-chosen")) {
-    					alert("이미 비추천한 상태입니다!");
+    				// 해당 글 작성자가 로그인한 본인이라면 추천 불가
+    				if(${isWriter==false}) {
+	    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 추천을 취소
+	    				if($(this).hasClass("like-chosen")) {
+	    					// true가 추천, false가 비추천
+	    					removeLike(true);
+	    					// 사용자가 비추천을 이미 누른 상태면 메시지 보여줌
+	    				} else if($(this).siblings().hasClass("like-chosen")) {
+	    					alert("이미 비추천한 상태입니다!");
+	    				} else {
+		    				addLike(true);
+	    				}
     				} else {
-	    				addLike(true);
+    					alert("본인의 게시글을 추천할 수 없습니다!");
     				}
     			} else {
     				alert("로그인 후에 이용할 수 있습니다!");
@@ -544,15 +549,20 @@
     		$("#board-dislike-btn").click(function() {
     			// 로그인 안되어 있으면 메시지 보여줌
     			if(${hasSessionId}) {
-    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 비추천을 취소
-    				if($(this).hasClass("like-chosen")) {
-    					// true가 추천, false가 비추천
-    					removeLike(false);
-    					// 사용자가 추천을 이미 누른 상태면 메시지 보여줌
-    				} else if($(this).siblings().hasClass("like-chosen")) {
-    					alert("이미 추천한 상태입니다!");
+    				// 해당 글 작성자가 로그인한 본인이라면 비추천 불가
+    				if(${isWriter==false}) {
+	    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 비추천을 취소
+	    				if($(this).hasClass("like-chosen")) {
+	    					// true가 추천, false가 비추천
+	    					removeLike(false);
+	    					// 사용자가 추천을 이미 누른 상태면 메시지 보여줌
+	    				} else if($(this).siblings().hasClass("like-chosen")) {
+	    					alert("이미 추천한 상태입니다!");
+	    				} else {
+		    				addLike(false);
+	    				}
     				} else {
-	    				addLike(false);
+    					alert("본인의 게시글을 비추천할 수 없습니다!");
     				}
     			} else {
     				alert("로그인 후에 이용할 수 있습니다!");
@@ -561,17 +571,24 @@
     		
     		$("#comment-box").on("click", ".comment-like-btn", function(e) {
     			let cno = $(e.target).closest(".comment").data("cno");
+    			let writer = $(e.target).closest(".comment").find(".comment-writer").text();
+    			let nickname = "${nickname}";
     			// 로그인 안되어 있으면 메시지 보여줌
     			if(${hasSessionId}) {
-    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 추천을 취소
-    				if($(this).hasClass("like-chosen")) {
-    					removeCommentLike(cno);
-    					// 사용자가 비추천을 이미 누른 상태면 메시지 보여줌
-    				} else if($(this).siblings().hasClass("like-chosen")) {
-    					alert("이미 비추천한 상태입니다!");
+    				// 클릭된 댓글의 작성자가 로그인한 본인이면 추천 불가
+    				if(writer != nickname) {
+	    				// 사용자가 추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 추천을 취소
+	    				if($(this).hasClass("like-chosen")) {
+	    					removeCommentLike(cno);
+	    					// 사용자가 비추천을 이미 누른 상태면 메시지 보여줌
+	    				} else if($(this).siblings().hasClass("like-chosen")) {
+	    					alert("이미 비추천한 상태입니다!");
+	    				} else {
+	    					// true가 추천, false가 비추천
+	    					addCommentLike(cno, true);
+	    				}
     				} else {
-    					// true가 추천, false가 비추천
-    					addCommentLike(cno, true);
+    					alert("본인의 댓글을 추천할 수 없습니다!");
     				}
     			} else {
     				alert("로그인 후에 이용할 수 있습니다!");
@@ -580,17 +597,24 @@
     		
     		$("#comment-box").on("click", ".comment-dislike-btn", function(e) {
     			let cno = $(e.target).closest(".comment").data("cno");
+    			let writer = $(e.target).closest(".comment").find(".comment-writer").text();
+    			let nickname = "${nickname}";
     			// 로그인 안되어 있으면 메시지 보여줌
     			if(${hasSessionId}) {
-    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 비추천을 취소
-    				if($(this).hasClass("like-chosen")) {
-    					removeCommentLike(cno);
-    					// 사용자가 추천을 이미 누른 상태면 메시지 보여줌
-    				} else if($(this).siblings().hasClass("like-chosen")) {
-    					alert("이미 추천한 상태입니다!");
+    				// 클릭된 댓글의 작성자가 로그인한 본인이면 비추천 불가
+    				if(writer != nickname) {
+	    				// 사용자가 비추천을 이미 누른 상태면 해당버튼에 추가되는 클래스인 like-chosen클래스가 있다면 비추천을 취소
+	    				if($(this).hasClass("like-chosen")) {
+	    					removeCommentLike(cno);
+	    					// 사용자가 추천을 이미 누른 상태면 메시지 보여줌
+	    				} else if($(this).siblings().hasClass("like-chosen")) {
+	    					alert("이미 추천한 상태입니다!");
+	    				} else {
+	    					// true가 추천, false가 비추천
+	    					addCommentLike(cno, false);
+	    				}
     				} else {
-    					// true가 추천, false가 비추천
-    					addCommentLike(cno, false);
+    					alert("본인의 댓글을 비추천할 수 없습니다!");
     				}
     			} else {
     				alert("로그인 후에 이용할 수 있습니다!");
