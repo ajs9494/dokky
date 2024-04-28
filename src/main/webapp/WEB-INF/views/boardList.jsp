@@ -32,6 +32,21 @@
 	align-items: center;
 }
 
+#board-filter-cnt {
+	display: flex;
+	width: 100%;
+	height: 50px;
+	justify-content: flex-end;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+#page-size {
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+}
+
 #board-title {
 	background-color: rgba(74, 165, 255, 0.2);
 	width: 100%;
@@ -222,6 +237,13 @@
 		</div>
 	</div>
 	<div id="container">
+		<div id="board-filter-cnt">
+			<select id="page-size">
+				<option value="10" ${"10".equals(param.pageSize) ? "selected" : ""}>10개씩 보기</option>
+				<option value="30" ${"30".equals(param.pageSize) ? "selected" : ""}>30개씩 보기</option>
+				<option value="50" ${"50".equals(param.pageSize) ? "selected" : ""}>50개씩 보기</option>
+			</select>
+		</div>
 		<div id="board-title" class="noto-sans700">${whichBoard eq 'free' ? '자유게시판' : '질문게시판'}</div>
 		<div id="board-list" class="noto-sans400">
 			<table>
@@ -318,8 +340,14 @@
 				<option value="W" ${"W".equals(param.option) ? "selected" : ""}>글쓴이</option>
 			</select> <input type="text" id="search-text" name="keyword" class="noto-sans400" 
 				value="${param.keyword}"  />
+				<input type="hidden" name="pageSize" value="${param.pageSize}">
 			<button type="submit" id="search-btn" class="noto-sans400">검색</button>
 		</form>
 	</div>
+	<script>
+		document.querySelector("#page-size").onchange = function() {
+			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + this.value + "&option=" + "${ph.sc.option}" + "&keyword=" + "${ph.sc.keyword}";
+		}
+	</script>
 </body>
 </html>
