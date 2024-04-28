@@ -73,10 +73,12 @@
 				writer LIKE concat('%', #{keyword}, '%')
 			</when>
 			<otherwise>
-				title LIKE concat('%', #{keyword}, '%')
-				OR contents LIKE concat('%', #{keyword}, '%')
+				(title LIKE concat('%', #{keyword}, '%') OR contents LIKE concat('%', #{keyword}, '%'))
 			</otherwise>
 		</choose>
+		<if test="isPopular">
+			AND (viewcnt >= 100 OR likecnt >= 10 OR ccnt >= 10)
+		</if>
 	</sql>
 	
 	<select id="searchResultCnt" parameterType="SearchCondition" resultType="int">

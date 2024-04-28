@@ -140,7 +140,8 @@ a {
 				type="hidden" name="page" value="${param.page}" /> <input
 				type="hidden" name="pageSize" value="${param.pageSize}" /> <input
 				type="hidden" name="option" value="${param.option}" /> <input
-				type="hidden" name="keyword" value="${param.keyword}" />
+				type="hidden" name="keyword" value="${param.keyword}" /> <input
+				type="hidden" name="isPopular" value="${param.isPopular}" />
 		</form>
 	</div>
 	<script>

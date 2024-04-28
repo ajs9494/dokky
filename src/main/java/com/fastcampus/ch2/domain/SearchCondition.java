@@ -7,21 +7,23 @@ public class SearchCondition {
 	private Integer pageSize;
 	private String option;
 	private String keyword;
+	private Boolean isPopular;
 	
 	public SearchCondition() {
 		this(1, 10);
 	}
 	
 	public SearchCondition(Integer page, Integer pageSize) {
-		this(page, pageSize, "TC", "");
+		this(page, pageSize, "TC", "", false);
 	}
 	
-	public SearchCondition(Integer page, Integer pageSize, String option, String keyword) {
+	public SearchCondition(Integer page, Integer pageSize, String option, String keyword, Boolean isPopular) {
 		super();
 		this.page = page;
 		this.pageSize = pageSize;
 		this.option = option;
 		this.keyword = keyword;
+		this.isPopular = isPopular;
 	}
 	
 	public String getQueryString() {
@@ -34,6 +36,7 @@ public class SearchCondition {
 				.queryParam("pageSize", pageSize)
 				.queryParam("option", option)
 				.queryParam("keyword", keyword)
+				.queryParam("isPopular", isPopular)
 				.build().toString();
 	}
 	
@@ -72,17 +75,26 @@ public class SearchCondition {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	
+	public Boolean getIsPopular() {
+		return isPopular;
+	}
+	
+	public void setIsPopular(Boolean isPopular) {
+		this.isPopular = isPopular;
+	}
 
 	@Override
 	public String toString() {
 		return "SearchCondition [page=" + page + ", pageSize=" + pageSize + ", option=" + option + ", keyword="
-				+ keyword + "]";
+				+ keyword + ", isPopular=" + isPopular + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((isPopular == null) ? 0 : isPopular.hashCode());
 		result = prime * result + ((keyword == null) ? 0 : keyword.hashCode());
 		result = prime * result + ((option == null) ? 0 : option.hashCode());
 		result = prime * result + ((page == null) ? 0 : page.hashCode());
@@ -99,6 +111,11 @@ public class SearchCondition {
 		if (getClass() != obj.getClass())
 			return false;
 		SearchCondition other = (SearchCondition) obj;
+		if (isPopular == null) {
+			if (other.isPopular != null)
+				return false;
+		} else if (!isPopular.equals(other.isPopular))
+			return false;
 		if (keyword == null) {
 			if (other.keyword != null)
 				return false;

@@ -22,6 +22,8 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/3460525fcc.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <style>
 #container {
 	display: flex;
@@ -36,15 +38,33 @@
 	display: flex;
 	width: 100%;
 	height: 50px;
-	justify-content: flex-end;
+	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 10px;
+}
+
+#popular-false-btn, #popular-true-btn {
+	width: 100px;
+	height: 40px;
+	line-height: 40px;
+	background-color: white;
+	cursor: pointer;
+	border: 1px solid #ccc;
+}
+
+#popular-false-btn:hover, #popular-true-btn:hover {
+	border: 1px solid black;
+}
+
+.popular-chosen {
+	border: 1px solid black !important;
 }
 
 #page-size {
 	width: 100px;
 	height: 30px;
 	line-height: 30px;
+	text-align: center;
 }
 
 #board-title {
@@ -232,13 +252,17 @@
 			</div>
 		</div>
 		<div id="login">
-			<button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}${ph.sc.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
+			<button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}${searchCondition.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
 			<button id="register-btn" class="noto-sans400" onclick="location.href='/ch2/register/add'">회원가입</button>
 		</div>
 	</div>
 	<div id="container">
 		<div id="board-filter-cnt">
-			<select id="page-size">
+			<div id="popular-btn-cnt">
+				<button type="button" id="popular-false-btn" class="noto-sans400${searchCondition.isPopular eq false ? ' popular-chosen' : ''}">전체글</button>
+				<button type="button" id="popular-true-btn" class="noto-sans400${searchCondition.isPopular eq true ? ' popular-chosen' : ''}"><i class="fa-solid fa-fire" style="color: #e11919; margin-right:5px;"></i>인기글</button>
+			</div>
+			<select id="page-size" class="noto-sans400">
 				<option value="10" ${"10".equals(param.pageSize) ? "selected" : ""}>10개씩 보기</option>
 				<option value="30" ${"30".equals(param.pageSize) ? "selected" : ""}>30개씩 보기</option>
 				<option value="50" ${"50".equals(param.pageSize) ? "selected" : ""}>50개씩 보기</option>
@@ -301,7 +325,7 @@
 					</c:if>
 		</div>
 		<div id="write-btn-cnt" class="noto-sans400">
-			<a href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/write' : '/questionBoard/write'}${ph.sc.queryString}" />" id="write-btn">글쓰기</a>
+			<a href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/write' : '/questionBoard/write'}${searchCondition.queryString}" />" id="write-btn">글쓰기</a>
 		</div>
 		<div id="page-nav-cnt" class="noto-sans400">
 			<div id="page-nav">
@@ -341,13 +365,22 @@
 			</select> <input type="text" id="search-text" name="keyword" class="noto-sans400" 
 				value="${param.keyword}"  />
 				<input type="hidden" name="pageSize" value="${param.pageSize}">
+				<input type="hidden" name="isPopular" value="${param.isPopular}">
 			<button type="submit" id="search-btn" class="noto-sans400">검색</button>
 		</form>
 	</div>
 	<script>
 		document.querySelector("#page-size").onchange = function() {
-			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + this.value + "&option=" + "${ph.sc.option}" + "&keyword=" + "${ph.sc.keyword}";
+			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + this.value + "&option=" + "${searchCondition.option}" + "&keyword=" + "${searchCondition.keyword}" + "&isPopular=" + "${searchCondition.isPopular}";
 		}
+		
+		$("#popular-true-btn").click(function() {
+			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + "${searchCondition.pageSize}" + "&option=" + "${searchCondition.option}" + "&keyword=" + "${searchCondition.keyword}" + "&isPopular=" + "true";
+		})
+		
+		$("#popular-false-btn").click(function() {
+			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + "${searchCondition.pageSize}" + "&option=" + "${searchCondition.option}" + "&keyword=" + "${searchCondition.keyword}" + "&isPopular=" + "false";
+		})
 	</script>
 </body>
 </html>
