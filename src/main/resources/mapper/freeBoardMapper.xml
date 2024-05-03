@@ -28,12 +28,12 @@
 	</delete>
 	
 	<insert id="insert" parameterType="BoardDto">
-		INSERT INTO free_board (title, writer, contents) VALUES (#{title}, #{writer}, #{contents})
+		INSERT INTO free_board (title, writer, contents, category) VALUES (#{title}, #{writer}, #{contents}, #{category})
 	</insert>
 	
 	<update id="update" parameterType="BoardDto">
 		UPDATE free_board 
-		SET title = #{title}, contents = #{contents} WHERE bno = #{bno}
+		SET title = #{title}, contents = #{contents}, category = #{category} WHERE bno = #{bno}
 	</update>
 	
 	<update id="increaseViewcnt" parameterType="int">
@@ -79,6 +79,17 @@
 		<if test="isPopular">
 			AND (viewcnt >= 100 OR likecnt >= 10 OR ccnt >= 10)
 		</if>
+		<choose>
+			<when test='scCategory.equals("수다")'>
+				AND category = "수다"
+			</when>
+			<when test='scCategory.equals("정보")'>
+				AND category = "정보"
+			</when>
+			<when test='scCategory.equals("모임")'>
+				AND category = "모임"
+			</when>
+		</choose>
 	</sql>
 	
 	<select id="searchResultCnt" parameterType="SearchCondition" resultType="int">

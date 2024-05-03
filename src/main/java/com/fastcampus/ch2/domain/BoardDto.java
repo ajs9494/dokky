@@ -10,18 +10,27 @@ public class BoardDto {
 	private Integer viewcnt;
 	private Integer ccnt;
 	private Integer likecnt;
+	private String category;
 	private Date regdate;
 	
-	public BoardDto() { this("","",""); }
+	public BoardDto() {}
 	
-	public BoardDto(String title, String writer, String contents) {
+	public BoardDto(String title, String writer, String contents, String category) {
 		super();
 		this.title = title;
 		this.writer = writer;
 		this.contents = contents;
+		this.category = category;
+	}
+	
+	public String getCategory() {
+		return category;
 	}
 
-	
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	public Integer getLikecnt() {
 		return likecnt;
 	}
@@ -89,7 +98,7 @@ public class BoardDto {
 	@Override
 	public String toString() {
 		return "BoardDto [bno=" + bno + ", title=" + title + ", writer=" + writer + ", contents=" + contents
-				+ ", viewcnt=" + viewcnt + ", ccnt=" + ccnt + ", likecnt=" + likecnt
+				+ ", viewcnt=" + viewcnt + ", ccnt=" + ccnt + ", likecnt=" + likecnt + ", category=" + category
 				+ ", regdate=" + regdate + "]";
 	}
 
@@ -98,8 +107,12 @@ public class BoardDto {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bno == null) ? 0 : bno.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((ccnt == null) ? 0 : ccnt.hashCode());
 		result = prime * result + ((contents == null) ? 0 : contents.hashCode());
+		result = prime * result + ((likecnt == null) ? 0 : likecnt.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + ((viewcnt == null) ? 0 : viewcnt.hashCode());
 		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
 		return result;
 	}
@@ -118,15 +131,35 @@ public class BoardDto {
 				return false;
 		} else if (!bno.equals(other.bno))
 			return false;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (ccnt == null) {
+			if (other.ccnt != null)
+				return false;
+		} else if (!ccnt.equals(other.ccnt))
+			return false;
 		if (contents == null) {
 			if (other.contents != null)
 				return false;
 		} else if (!contents.equals(other.contents))
 			return false;
+		if (likecnt == null) {
+			if (other.likecnt != null)
+				return false;
+		} else if (!likecnt.equals(other.likecnt))
+			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;
 		} else if (!title.equals(other.title))
+			return false;
+		if (viewcnt == null) {
+			if (other.viewcnt != null)
+				return false;
+		} else if (!viewcnt.equals(other.viewcnt))
 			return false;
 		if (writer == null) {
 			if (other.writer != null)

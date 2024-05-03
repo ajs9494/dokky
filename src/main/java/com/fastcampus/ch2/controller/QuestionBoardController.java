@@ -89,6 +89,7 @@ public class QuestionBoardController {
 			e.printStackTrace();
 			rattr.addFlashAttribute("msg", "READ_ERR");
 			sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
+			sc.setScCategory(URLEncoder.encode(sc.getScCategory()));
 			return "redirect:/questionBoard/list" + sc.getQueryString();
 		}
 		 return "boardRead";
@@ -100,6 +101,8 @@ public class QuestionBoardController {
 		// 로그인 했는지 확인
 		// 로그인 안했으면 로그인화면으로 보냄
 		HttpSession session = request.getSession(false);
+		sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
+		sc.setScCategory(URLEncoder.encode(sc.getScCategory()));
 		if(session == null) return "redirect:/login/login" + sc.getQueryString() + "&toURL=" + request.getServletPath();
 		String id = (String) session.getAttribute("id");
 		if(id == null) return "redirect:/login/login" + sc.getQueryString() + "&toURL=" + request.getServletPath();
@@ -158,11 +161,14 @@ public class QuestionBoardController {
 				String id = (String)session.getAttribute("id");
 				if(id != null) {
 					String nickname = userService.getUser(id).getNickname();
-					questionBoardService.removeBoard(bno, nickname);
-					// 게시글 지울때 해당 게시글에 달린 댓글도 모두 삭제
-					questionCommentService.removeComments(bno);
-					// 삭제성공메시지 전달
-					rattr.addFlashAttribute("msg", "DEL_OK");
+					if(questionBoardService.removeBoard(bno, nickname) != 1) {
+						rattr.addFlashAttribute("msg", "DEL_ERR");
+					} else {
+						// 게시글 지울때 해당 게시글에 달린 댓글도 모두 삭제
+						questionCommentService.removeComments(bno);
+						// 삭제성공메시지 전달
+						rattr.addFlashAttribute("msg", "DEL_OK");
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -170,6 +176,7 @@ public class QuestionBoardController {
 			rattr.addFlashAttribute("msg", "DEL_ERR");
 		}
 		sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
+		sc.setScCategory(URLEncoder.encode(sc.getScCategory()));
 		return "redirect:/questionBoard/list"+sc.getQueryString();
 	}
 	

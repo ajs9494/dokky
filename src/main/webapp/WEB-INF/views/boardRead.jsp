@@ -39,11 +39,21 @@
       }
 
       #board-header {
+      	display: grid;
+      	grid-template-columns: 1fr 1fr;
+      	grid-template-rows: 1fr 1fr;
         margin-bottom: 50px;
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+        background-color: rgba(0,0,0,0.04);
+        padding: 0 10px;
       }
 
       #board-header-writer {
         font-size: 1.2rem;
+      }
+      
+      #board-name, #board-category {
+      	text-align: right;
       }
       
       #board-title {
@@ -356,7 +366,9 @@
       <div id="board-container">
         <div id="board-header">
           <div id="board-header-writer">${board.writer}</div>
+          <div id="board-name">${whichBoard eq 'free' ? '자유게시판' : '질문게시판'}</div>
           <div id="board-header-regview"><fmt:formatDate value="${board.regdate}" pattern="yyyy-MM-dd HH:mm" type="both" /> / ${board.viewcnt}</div>
+          <div id="board-category">${board.category}</div>
         </div>
         <h1 id="board-title">${board.title}</h1>
         <div id="board-contents">${board.contents}</div>
@@ -371,9 +383,12 @@
           		<input type="hidden" name="pageSize" value="${searchCondition.pageSize}"/>
           		<input type="hidden" name="option" value="${searchCondition.option}"/>
           		<input type="hidden" name="keyword" value="${searchCondition.keyword}"/>
+          		<input type="hidden" name="isPopular" value="${searchCondition.isPopular}"/>
+          		<input type="hidden" name="scCategory" value="${searchCondition.scCategory}"/>
           		<input type="hidden" name="bno" value="${board.bno}"/>
           		<input type="hidden" name="title" value="${board.title}"/>
           		<input type="hidden" name="contents" value="${board.contents}"/>
+          		<input type="hidden" name="category" value="${board.category}"/>
           		<button class="noto-sans400">수정</button></form>
           		<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/remove/' : '/questionBoard/remove/'}${board.bno}${searchCondition.queryString}" />" method="post" onsubmit="return confirm('게시글을 삭제하시겠습니까?')"><input type="hidden" name="_method" value="DELETE"/><button class="noto-sans400">삭제</button></form>
           	</c:if>

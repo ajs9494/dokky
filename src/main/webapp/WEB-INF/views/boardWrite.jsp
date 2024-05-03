@@ -32,6 +32,29 @@
 	margin: auto;
 }
 
+#write-header {
+	font-size: 1.5rem;
+	border-bottom: 2px solid black;
+	padding-bottom: 10px;
+}
+
+#category-cnt {
+	margin-top: 50px;
+}
+
+#category-cnt div {
+	margin-left: 3px;
+}
+
+#category {
+	width: 100%;
+	height: 50px;
+	margin: 5px 0px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	font-size: 1rem;
+}
+
 #title {
 	margin: 5px 0px;
 	height: 50px;
@@ -116,6 +139,24 @@
 	</div>
 	<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/write' : '/questionBoard/write'}${searchCondition.queryString}" />" method="post"
 		id="container" class="noto-sans400" onsubmit="return formCheck(this)">
+		<div id="write-header" class="noto-sans700">${whichBoard eq 'free' ? '자유게시판 글쓰기' : '질문게시판 글쓰기'}</div>
+		<div id="category-cnt">
+			<div>카테고리</div>
+			<select id="category" name="category" class="noto-sans400">
+				<c:choose>
+					<c:when test="${whichBoard eq 'free'}">
+						<option value="수다">수다</option>
+						<option value="정보">정보</option>
+						<option value="모임">모임</option>
+					</c:when>
+					<c:otherwise>
+						<option value="개발">개발</option>
+						<option value="취업">취업</option>
+						<option value="기타">기타</option>
+					</c:otherwise>
+				</c:choose>
+			</select>
+		</div>
 		<div id=title-cnt>
 			<div>제목</div>
 			<input type="text" id="title" class="noto-sans400" name="title" placeholder="제목을 입력해주세요." value="${board.title != null ? board.title : ''}"></input>

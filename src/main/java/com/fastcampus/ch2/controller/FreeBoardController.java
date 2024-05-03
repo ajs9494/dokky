@@ -89,6 +89,7 @@ public class FreeBoardController {
 			e.printStackTrace();
 			rattr.addFlashAttribute("msg", "READ_ERR");
 			sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
+			sc.setScCategory(URLEncoder.encode(sc.getScCategory()));
 			return "redirect:/freeBoard/list" + sc.getQueryString();
 		}
 		 return "boardRead";
@@ -100,6 +101,8 @@ public class FreeBoardController {
 		// 로그인 했는지 확인
 		// 로그인 안했으면 로그인화면으로 보냄
 		HttpSession session = request.getSession(false);
+		sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
+		sc.setScCategory(URLEncoder.encode(sc.getScCategory()));
 		if(session == null) return "redirect:/login/login" + sc.getQueryString() + "&toURL=" + request.getServletPath();
 		String id = (String) session.getAttribute("id");
 		if(id == null) return "redirect:/login/login" + sc.getQueryString() + "&toURL=" + request.getServletPath();
@@ -111,6 +114,7 @@ public class FreeBoardController {
 	@PostMapping("/write")
 	public String writeBoard(BoardDto board, HttpServletRequest request, RedirectAttributes rattr, SearchCondition sc) {
 		try {
+			System.out.println("board="+board);
 			// 유저닉네임 가져와서 게시글의 작성자로 저장
 			HttpSession session = request.getSession(false);
 			String id = (String) session.getAttribute("id");
@@ -158,11 +162,14 @@ public class FreeBoardController {
 				String id = (String)session.getAttribute("id");
 				if(id != null) {
 					String nickname = userService.getUser(id).getNickname();
-					freeBoardService.removeBoard(bno, nickname);
-					// 게시글 지울때 해당 게시글에 달린 댓글도 모두 삭제
-					freeCommentService.removeComments(bno);
-					// 삭제성공메시지 전달
-					rattr.addFlashAttribute("msg", "DEL_OK");
+					if(freeBoardService.removeBoard(bno, nickname) != 1) {
+						rattr.addFlashAttribute("msg", "DEL_ERR");
+					} else {
+						// 게시글 지울때 해당 게시글에 달린 댓글도 모두 삭제
+						freeCommentService.removeComments(bno);
+						// 삭제성공메시지 전달
+						rattr.addFlashAttribute("msg", "DEL_OK");
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -170,6 +177,7 @@ public class FreeBoardController {
 			rattr.addFlashAttribute("msg", "DEL_ERR");
 		}
 		sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
+		sc.setScCategory(URLEncoder.encode(sc.getScCategory()));
 		return "redirect:/freeBoard/list"+sc.getQueryString();
 	}
 	

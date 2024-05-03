@@ -8,22 +8,24 @@ public class SearchCondition {
 	private String option;
 	private String keyword;
 	private Boolean isPopular;
+	private String scCategory;
 	
 	public SearchCondition() {
 		this(1, 10);
 	}
 	
 	public SearchCondition(Integer page, Integer pageSize) {
-		this(page, pageSize, "TC", "", false);
+		this(page, pageSize, "TC", "", false, "전체");
 	}
 	
-	public SearchCondition(Integer page, Integer pageSize, String option, String keyword, Boolean isPopular) {
+	public SearchCondition(Integer page, Integer pageSize, String option, String keyword, Boolean isPopular, String scCategory) {
 		super();
 		this.page = page;
 		this.pageSize = pageSize;
 		this.option = option;
 		this.keyword = keyword;
 		this.isPopular = isPopular;
+		this.scCategory = scCategory;
 	}
 	
 	public String getQueryString() {
@@ -37,6 +39,29 @@ public class SearchCondition {
 				.queryParam("option", option)
 				.queryParam("keyword", keyword)
 				.queryParam("isPopular", isPopular)
+				.queryParam("scCategory", scCategory)
+				.build().toString();
+	}
+	
+	public String getQueryString(Integer page, Boolean isPopular) {
+		return UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("pageSize", pageSize)
+				.queryParam("option", option)
+				.queryParam("keyword", keyword)
+				.queryParam("isPopular", isPopular)
+				.queryParam("scCategory", scCategory)
+				.build().toString();
+	}
+	
+	public String getQueryString(Integer page, String scCategory) {
+		return UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("pageSize", pageSize)
+				.queryParam("option", option)
+				.queryParam("keyword", keyword)
+				.queryParam("isPopular", isPopular)
+				.queryParam("scCategory", scCategory)
 				.build().toString();
 	}
 	
@@ -84,16 +109,25 @@ public class SearchCondition {
 		this.isPopular = isPopular;
 	}
 
+	public String getScCategory() {
+		return scCategory;
+	}
+
+	public void setScCategory(String scCategory) {
+		this.scCategory = scCategory;
+	}
+
 	@Override
 	public String toString() {
 		return "SearchCondition [page=" + page + ", pageSize=" + pageSize + ", option=" + option + ", keyword="
-				+ keyword + ", isPopular=" + isPopular + "]";
+				+ keyword + ", isPopular=" + isPopular + ", scCategory=" + scCategory + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((scCategory == null) ? 0 : scCategory.hashCode());
 		result = prime * result + ((isPopular == null) ? 0 : isPopular.hashCode());
 		result = prime * result + ((keyword == null) ? 0 : keyword.hashCode());
 		result = prime * result + ((option == null) ? 0 : option.hashCode());
@@ -111,6 +145,11 @@ public class SearchCondition {
 		if (getClass() != obj.getClass())
 			return false;
 		SearchCondition other = (SearchCondition) obj;
+		if (scCategory == null) {
+			if (other.scCategory != null)
+				return false;
+		} else if (!scCategory.equals(other.scCategory))
+			return false;
 		if (isPopular == null) {
 			if (other.isPopular != null)
 				return false;

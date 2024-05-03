@@ -32,6 +32,29 @@
 	margin: auto;
 }
 
+#write-header {
+	font-size: 1.5rem;
+	border-bottom: 2px solid black;
+	padding-bottom: 10px;
+}
+
+#category-cnt {
+	margin-top: 50px;
+}
+
+#category-cnt div {
+	margin-left: 3px;
+}
+
+#category {
+	width: 100%;
+	height: 50px;
+	margin: 5px 0px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	font-size: 1rem;
+}
+
 #title {
 	margin: 5px 0px;
 	height: 50px;
@@ -116,6 +139,24 @@
 	</div>
 	<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/update/' : '/questionBoard/update/'}${board.bno}${searchCondition.queryString}" />" method="post"
 		id="container" class="noto-sans400" onsubmit="return formCheck(this)"><input type="hidden" name="_method" value="PATCH"/>
+		<div id="write-header" class="noto-sans700">${whichBoard eq 'free' ? '자유게시판 글수정' : '질문게시판 글수정'}</div>
+		<div id="category-cnt">
+			<div>카테고리</div>
+			<select id="category" name="category" class="noto-sans400">
+				<c:choose>
+					<c:when test="${whichBoard eq 'free'}">
+						<option value="수다" ${board.category eq "수다" ? "selected" : ""}>수다</option>
+						<option value="정보" ${board.category eq "정보" ? "selected" : ""}>정보</option>
+						<option value="모임" ${board.category eq "모임" ? "selected" : ""}>모임</option>
+					</c:when>
+					<c:otherwise>
+						<option value="개발" ${board.category eq "개발" ? "selected" : ""}>개발</option>
+						<option value="취업" ${board.category eq "취업" ? "selected" : ""}>취업</option>
+						<option value="기타" ${board.category eq "기타" ? "selected" : ""}>기타</option>
+					</c:otherwise>
+				</c:choose>
+			</select>
+		</div>
 		<div id=title-cnt>
 			<div>제목</div>
 			<input type="text" id="title" class="noto-sans400" name="title" placeholder="제목을 입력해주세요." value="${board.title}"></input>

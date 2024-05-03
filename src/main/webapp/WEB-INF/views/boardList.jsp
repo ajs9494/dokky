@@ -44,12 +44,17 @@
 }
 
 #popular-false-btn, #popular-true-btn {
+	display: inline-block;
+	text-align: center;
 	width: 100px;
 	height: 40px;
 	line-height: 40px;
 	background-color: white;
-	cursor: pointer;
 	border: 1px solid #ccc;
+}
+
+#popular-true-btn {
+	margin-right: 20px;
 }
 
 #popular-false-btn:hover, #popular-true-btn:hover {
@@ -58,6 +63,19 @@
 
 .popular-chosen {
 	border: 1px solid black !important;
+}
+
+.category-btn {
+	margin: 0 20px;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.category-btn:hover {
+	color: rgba(0, 0, 0, 1);
+}
+
+.category-chosen {
+	color: rgba(0, 0, 0, 1);
 }
 
 #page-size {
@@ -98,7 +116,7 @@
 	text-align: center;
 }
 
-#board-list>table>tbody>tr>td:nth-child(2) {
+#board-list>table>tbody>tr>td:nth-child(3) {
 	text-align: left;
 }
 
@@ -107,11 +125,15 @@
 }
 
 .col-bno {
-	width: 11%;
+	width: 8%;
+}
+
+.col-category {
+	width: 9%;
 }
 
 .col-title {
-	width: 45%;
+	width: 43%;
 }
 
 .col-writer {
@@ -123,11 +145,11 @@
 }
 
 .col-viewcnt {
-	width: 10%;
+	width: 8%;
 }
 
 .col-likecnt {
-	width: 7%;
+	width: 5%;
 }
 
 #write-btn-cnt {
@@ -258,9 +280,33 @@
 	</div>
 	<div id="container">
 		<div id="board-filter-cnt">
-			<div id="popular-btn-cnt">
-				<button type="button" id="popular-false-btn" class="noto-sans400${searchCondition.isPopular eq false ? ' popular-chosen' : ''}">전체글</button>
-				<button type="button" id="popular-true-btn" class="noto-sans400${searchCondition.isPopular eq true ? ' popular-chosen' : ''}"><i class="fa-solid fa-fire" style="color: #e11919; margin-right:5px;"></i>인기글</button>
+			<div id="filter-btn-cnt">
+				<c:choose>
+					<c:when test="${whichBoard eq 'free'}">
+						<a id="popular-false-btn" class="noto-sans400${searchCondition.isPopular eq false ? ' popular-chosen' : ''}" href="<c:url value="/freeBoard/list${searchCondition.getQueryString(1, false)}" />">전체글</a>
+						<a id="popular-true-btn" class="noto-sans400${searchCondition.isPopular eq true ? ' popular-chosen' : ''}" href="<c:url value="/freeBoard/list${searchCondition.getQueryString(1, true)}" />"><i class="fa-solid fa-fire" style="color: #e11919; margin-right:5px;"></i>인기글</a>
+					</c:when>
+					<c:otherwise>
+						<a id="popular-false-btn" class="noto-sans400${searchCondition.isPopular eq false ? ' popular-chosen' : ''}" href="<c:url value="/questionBoard/list${searchCondition.getQueryString(1, false)}" />">전체글</a>
+						<a id="popular-true-btn" class="noto-sans400${searchCondition.isPopular eq true ? ' popular-chosen' : ''}" href="<c:url value="/questionBoard/list${searchCondition.getQueryString(1, true)}" />"><i class="fa-solid fa-fire" style="color: #e11919; margin-right:5px;"></i>인기글</a>
+					</c:otherwise>
+				</c:choose>
+				<span id="category-btn-cnt">
+					<c:choose>
+						<c:when test="${whichBoard eq 'free'}">
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('전체') ? ' category-chosen' : ''}" href="<c:url value="/freeBoard/list${searchCondition.getQueryString(1,'전체')}" />">전체</a>
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('수다') ? ' category-chosen' : ''}" href="<c:url value="/freeBoard/list${searchCondition.getQueryString(1,'수다')}" />">수다</a>
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('정보') ? ' category-chosen' : ''}" href="<c:url value="/freeBoard/list${searchCondition.getQueryString(1,'정보')}" />">정보</a>
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('모임') ? ' category-chosen' : ''}" href="<c:url value="/freeBoard/list${searchCondition.getQueryString(1,'모임')}" />">모임</a>
+						</c:when>
+						<c:otherwise>
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('전체') ? ' category-chosen' : ''}" href="<c:url value="/questionBoard/list${searchCondition.getQueryString(1,'전체')}" />">전체</a>
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('개발') ? ' category-chosen' : ''}" href="<c:url value="/questionBoard/list${searchCondition.getQueryString(1,'개발')}" />">개발</a>
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('취업') ? ' category-chosen' : ''}" href="<c:url value="/questionBoard/list${searchCondition.getQueryString(1,'취업')}" />">취업</a>
+							<a class="noto-sans400 category-btn${searchCondition.scCategory.equals('기타') ? ' category-chosen' : ''}" href="<c:url value="/questionBoard/list${searchCondition.getQueryString(1,'기타')}" />">기타</a>
+						</c:otherwise>
+					</c:choose>
+				</span>
 			</div>
 			<select id="page-size" class="noto-sans400">
 				<option value="10" ${"10".equals(param.pageSize) ? "selected" : ""}>10개씩 보기</option>
@@ -273,6 +319,7 @@
 			<table>
 				<colgroup>
 					<col class="col-bno" />
+					<col class="col-category" />
 					<col class="col-title" />
 					<col class="col-writer" />
 					<col class="col-regdate" />
@@ -282,6 +329,7 @@
 				<thead>
 					<tr>
 						<th>글번호</th>
+						<th>카테고리</th>
 						<th>제목</th>
 						<th>글쓴이</th>
 						<th>등록일</th>
@@ -293,6 +341,7 @@
 					<c:forEach var="board" items="${li}">
 						<tr>
 							<td>${board.bno}</td>
+							<td>${board.category}</td>
 							<td>
 							<a href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/read/' : '/questionBoard/read/'}${board.bno}${ph.sc.queryString}" />">${board.title}</a>
 							<c:if test="${board.ccnt > 0}">
@@ -364,23 +413,18 @@
 				<option value="W" ${"W".equals(param.option) ? "selected" : ""}>글쓴이</option>
 			</select> <input type="text" id="search-text" name="keyword" class="noto-sans400" 
 				value="${param.keyword}"  />
-				<input type="hidden" name="pageSize" value="${param.pageSize}">
-				<input type="hidden" name="isPopular" value="${param.isPopular}">
+				<input type="hidden" name="pageSize" value="${searchCondition.pageSize}">
+				<input type="hidden" name="isPopular" value="${searchCondition.isPopular}">
+				<input type="hidden" name="scCategory" value="${searchCondition.scCategory}">
 			<button type="submit" id="search-btn" class="noto-sans400">검색</button>
 		</form>
 	</div>
 	<script>
 		document.querySelector("#page-size").onchange = function() {
-			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + this.value + "&option=" + "${searchCondition.option}" + "&keyword=" + "${searchCondition.keyword}" + "&isPopular=" + "${searchCondition.isPopular}";
+			if(this.value=="10") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=10&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
+			if(this.value=="30") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=30&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
+			if(this.value=="50") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=50&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
 		}
-		
-		$("#popular-true-btn").click(function() {
-			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + "${searchCondition.pageSize}" + "&option=" + "${searchCondition.option}" + "&keyword=" + "${searchCondition.keyword}" + "&isPopular=" + "true";
-		})
-		
-		$("#popular-false-btn").click(function() {
-			window.location.href = "<c:url value="${whichBoard eq 'free' ? '/freeBoard/list?pageSize=' : '/questionBoard/list?pageSize='}"/>" + "${searchCondition.pageSize}" + "&option=" + "${searchCondition.option}" + "&keyword=" + "${searchCondition.keyword}" + "&isPopular=" + "false";
-		})
 	</script>
 </body>
 </html>
