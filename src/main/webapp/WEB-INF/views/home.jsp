@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <title>DOKKY</title>
     <style>
       #board-container {
@@ -41,10 +42,17 @@
       
       #board-container li {
       	padding: 10px;
+      	display: flex;
+	    align-items: center;
+	    justify-content: center;
       }
 
       .board-title {
         font-size: 1.2rem;
+		white-space: nowrap;
+	    overflow: hidden;
+	    margin-right: 3px;
+	    text-overflow: ellipsis;
       }
       
       .ccnt {
@@ -105,5 +113,13 @@
         </ul>
       </div>
     </div>
+    <script>
+	    $(".board-title").each(function() {
+			let title = $(this)[0];
+			if(title.scrollWidth > title.clientWidth) {
+				title.setAttribute("title", title.text);
+			}
+		})
+    </script>
   </body>
 </html>

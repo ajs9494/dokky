@@ -28,7 +28,6 @@
 #container {
 	display: flex;
 	width: 1100px;
-	height: 1000px;
 	margin: auto;
 	flex-direction: column;
 	align-items: center;
@@ -100,6 +99,7 @@
 
 #board-list>table {
 	border-collapse: collapse;
+	table-layout: fixed;
 }
 
 #board-list>table tr {
@@ -118,6 +118,16 @@
 
 #board-list>table>tbody>tr>td:nth-child(3) {
 	text-align: left;
+	display: flex;
+    align-items: center;
+}
+
+.board-title {
+	white-space: nowrap;
+    overflow: hidden;
+    margin-right: 3px;
+    text-overflow: ellipsis;
+    
 }
 
 #board-list table {
@@ -209,6 +219,7 @@
 	width: 100%;
 	height: 80px;
 	padding: 20px;
+	margin-bottom: 100px;
 }
 
 #condition {
@@ -343,7 +354,7 @@
 							<td>${board.bno}</td>
 							<td>${board.category}</td>
 							<td>
-							<a href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/read/' : '/questionBoard/read/'}${board.bno}${ph.sc.queryString}" />">${board.title}</a>
+							<a class="board-title" href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/read/' : '/questionBoard/read/'}${board.bno}${ph.sc.queryString}" />">${board.title}</a>
 							<c:if test="${board.ccnt > 0}">
 							<span class="ccnt">[${board.ccnt}]</span>
 							</c:if>
@@ -420,11 +431,20 @@
 		</form>
 	</div>
 	<script>
-		document.querySelector("#page-size").onchange = function() {
-			if(this.value=="10") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=10&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
-			if(this.value=="30") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=30&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
-			if(this.value=="50") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=50&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
-		}
+		$(document).ready(function() {
+			document.querySelector("#page-size").onchange = function() {
+				if(this.value=="10") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=10&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
+				if(this.value=="30") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=30&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
+				if(this.value=="50") window.location.href = "/ch2${whichBoard eq 'free' ? '/freeBoard/list' : '/questionBoard/list'}?pageSize=50&option=${searchCondition.option}&keyword=${searchCondition.keyword}&isPopular=${searchCondition.isPopular}&scCategory=${searchCondition.scCategory}";
+			}
+			
+			$(".board-title").each(function() {
+				let title = $(this)[0];
+				if(title.scrollWidth > title.clientWidth) {
+					title.setAttribute("title", title.text);
+				}
+			})
+		})
 	</script>
 </body>
 </html>
