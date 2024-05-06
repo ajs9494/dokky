@@ -162,7 +162,7 @@
 			<input type="text" id="title" class="noto-sans400" name="title" placeholder="제목을 입력해주세요." value="${board.title}"></input>
 		</div>
 		<div id="editor"></div>
-		<input type="hidden" id="contents" name="contents" value="${board.contents}"/>
+		<input type="hidden" id="contents" name="contents" value="<c:out value="${board.contents}"/>"/>
 		<div id="btn-cnt">
 			<a
 				href="<c:url value="${whichBoard eq 'free' ? '/freeBoard/read/' : '/questionBoard/read/'}${board.bno}${searchCondition.queryString}" />"

@@ -65,6 +65,12 @@
         margin-bottom: 50px;
       }
       
+      #board-contents a {
+      	color: deepskyblue;
+      	text-decoration: underline;
+      	text-decoration-color: deepskyblue;
+      }
+      
       #board-like-cnt {
       	display: flex;
       	justify-content: center;
@@ -387,7 +393,7 @@
           		<input type="hidden" name="scCategory" value="${searchCondition.scCategory}"/>
           		<input type="hidden" name="bno" value="${board.bno}"/>
           		<input type="hidden" name="title" value="${board.title}"/>
-          		<input type="hidden" name="contents" value="${board.contents}"/>
+          		<input type="hidden" name="contents" value="<c:out value='${board.contents}'/>"/>
           		<input type="hidden" name="category" value="${board.category}"/>
           		<button class="noto-sans400">수정</button></form>
           		<form action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/remove/' : '/questionBoard/remove/'}${board.bno}${searchCondition.queryString}" />" method="post" onsubmit="return confirm('게시글을 삭제하시겠습니까?')"><input type="hidden" name="_method" value="DELETE"/><button class="noto-sans400">삭제</button></form>
@@ -454,6 +460,7 @@
     </div>
     <script>
     	$(document).ready(function() {
+    		// 게시글 좋아요 보여주기
     		$.ajax({
 				type: 'GET',
 				url: '/ch2${whichBoard eq 'free' ? '/freeBoardLike/show/' : '/questionBoardLike/show/'}${board.bno}',
@@ -474,6 +481,7 @@
 				}
 			})
 			
+			// 댓글 좋아요 보여주기
 			showCommentLike();
     		
     		$("#comment-add-btn").click(function() {
