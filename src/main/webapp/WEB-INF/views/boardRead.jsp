@@ -71,6 +71,15 @@
       	text-decoration-color: deepskyblue;
       }
       
+      #board-contents img {
+      	max-width: 100%;
+      }
+      
+      #board-contents .ql-video {
+      	width: 100%;
+      	height: 551px;
+      }
+      
       #board-like-cnt {
       	display: flex;
       	justify-content: center;
