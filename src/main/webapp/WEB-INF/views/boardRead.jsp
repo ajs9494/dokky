@@ -4,8 +4,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page session="false" %>
 <c:set var="hasSessionId" value="${pageContext.request.getSession(false).getAttribute('id') ne null}"/>
-<c:set var="loginOut" value="${hasSessionId ? '로그아웃' : '로그인'}"/>
-<c:set var="loginOutLink" value="${hasSessionId ? '/ch2/login/logout' : '/ch2/login/login'}"/>
 <c:set var="whichBoard"
 	value="${fn:split(req.getServletPath(), '/')[0] eq 'freeBoard' ? 'free' : 'question'}" />
 <!DOCTYPE html>
@@ -366,21 +364,11 @@
   	if(msg=="WRT_OK") alert("게시글이 등록되었습니다");
   	if(msg=="UPD_OK") alert("게시글이 수정되었습니다");
   </script>
-    <div id="header">
-      <div id="logo" class="noto-sans700"><a href="<c:url value='/' />">DOKKY</a></div>
-      <div id="menu" class="noto-sans700">
-        <div class="menu-board"><a href="<c:url value='/freeBoard/list' />">자유게시판</a></div>
-        <div class="menu-board"><a href="<c:url value='/questionBoard/list' />">질문게시판</a></div>
-      </div>
-      <div id="login">
-        <button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}${searchCondition.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
-        <button id="register-btn" class="noto-sans400" onclick="location.href='/ch2/register/add'">회원가입</button>
-      </div>
-    </div>
+    <%@include file="header.jsp"%>
     <div id="container" class="noto-sans400">
       <div id="board-container">
         <div id="board-header">
-          <div id="board-header-writer">${board.writer}</div>
+          <div id="board-header-writer">${board.writer eq null ? '탈퇴한 회원' : board.writer}</div>
           <div id="board-name">${whichBoard eq 'free' ? '자유게시판' : '질문게시판'}</div>
           <div id="board-header-regview"><fmt:formatDate value="${board.regdate}" pattern="yyyy-MM-dd HH:mm" type="both" /> / ${board.viewcnt}</div>
           <div id="board-category">${board.category}</div>
@@ -416,7 +404,7 @@
         <ul>
         <c:forEach var="comment" items="${comments}">
           <li class="${comment.cno == comment.pcno ? 'comment' : 'comment comment-rep'}" data-cno="${comment.cno}" data-pcno="${comment.pcno}">
-          	<div class="comment-writer-like-cnt"><div class="comment-writer">${comment.writer}</div>
+          	<div class="comment-writer-like-cnt"><div class="comment-writer">${comment.writer eq '' ? '탈퇴한 회원' : comment.writer}</div>
           	<div class="comment-like-cnt"><button type="button" class="comment-like-btn"></button><button type="button" class="comment-dislike-btn"></button></div>
           	</div>
             <div class="comment-regdate"><fmt:formatDate value="${comment.regdate}" pattern="yyyy-MM-dd HH:mm" type="both"/></div>
@@ -878,7 +866,7 @@
     			tmp += ' data-cno=' + comment.cno;
     			tmp += ' data-pcno=' + comment.pcno + '>';
     			tmp += '<div class="comment-writer-like-cnt">';
-    			tmp += '<div class="comment-writer">' + comment.writer + '</div>';
+    			tmp += '<div class="comment-writer">' + (comment.writer == '' ? '탈퇴한 회원' : comment.writer) + '</div>';
     			tmp += '<div class="comment-like-cnt"><button type="button" class="comment-like-btn"></button><button type="button" class="comment-dislike-btn"></button></div></div>';
     			tmp += '<div class="comment-regdate">' + dateTime + '</div>';
     			tmp += '<div class="comment-contents">' + comment.contents + '</div>';

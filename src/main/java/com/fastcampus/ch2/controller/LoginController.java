@@ -1,5 +1,6 @@
 package com.fastcampus.ch2.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import javax.servlet.http.Cookie;
@@ -30,55 +31,73 @@ public class LoginController {
 	}
 	
 	@PostMapping("/login")
-	public String login(String id, String pwd, boolean rememberId, String toURL, HttpServletRequest request, HttpServletResponse response, SearchCondition sc) throws Exception {
-		String msg = URLEncoder.encode("아이디 또는 비밀번호가 일치하지 않습니다", "utf-8");
-		// 아이디 패스워드 일치하는지 확인, 일치하지 않으면 메시지와 함께 로그인화면으로 돌아감
-		if(!loginCheck(id, pwd)) {
-			return "redirect:/login/login?msg="+msg;
-		}
-		
-		// 일치하면 세션객체를 얻어와 아이디를 저장
-		HttpSession session = request.getSession();
-		session.setAttribute("id", id);
-		
-		// 아이디 저장 체크 시 쿠키 생성, 응답에 저장
-		if(rememberId) {
-			Cookie cookie = new Cookie("id", id);
-			response.addCookie(cookie);
-		// 아이디 저장 체크 해제 시 쿠키 삭제, 응답에 저장
-		} else {
-			Cookie cookie = new Cookie("id", null);
-			cookie.setMaxAge(0);
-			response.addCookie(cookie);
-		}
-		// 홈 또는 가려고 했던 페이지로 이동
-		if(toURL == null || toURL == "") {
+	public String login(String id, String pwd, boolean rememberId, String toURL, HttpServletRequest request, HttpServletResponse response, SearchCondition sc) {
+		try {
+			String msg = URLEncoder.encode("아이디 또는 비밀번호가 일치하지 않습니다", "utf-8");
+			// 아이디 패스워드 일치하는지 확인, 일치하지 않으면 메시지와 함께 로그인화면으로 돌아감
+			if(!loginCheck(id, pwd)) {
+				return "redirect:/login/login?msg="+msg;
+			}
+			
+			// 일치하면 세션객체를 얻어와 아이디를 저장
+			HttpSession session = request.getSession();
+			session.setAttribute("id", id);
+			UserDto user = userService.getUser(id);
+			session.setAttribute("nickname", user.getNickname());
+			
+			// 아이디 저장 체크 시 쿠키 생성, 응답에 저장
+			if(rememberId) {
+				Cookie cookie = new Cookie("id", id);
+				response.addCookie(cookie);
+			// 아이디 저장 체크 해제 시 쿠키 삭제, 응답에 저장
+			} else {
+				Cookie cookie = new Cookie("id", null);
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+			}
+			// 홈 또는 가려고 했던 페이지로 이동
+			if(toURL == null || toURL == "") {
+				return "redirect:/";
+			} else if(sc.getPage() == null) {
+				return "redirect:" + toURL;
+			} else {
+				sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
+				sc.setScCategory(URLEncoder.encode(sc.getScCategory()));
+				return "redirect:" + toURL + sc.getQueryString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			return "redirect:/";
-		} else if(sc.getPage() == null) {
-			return "redirect:" + toURL;
-		} else {
-			sc.setKeyword(URLEncoder.encode(sc.getKeyword()));
-			return "redirect:" + toURL + sc.getQueryString();
 		}
 	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session, RedirectAttributes rattr) {
-		// 세션을 종료한 후 로그아웃 완료 메시지와 함께 홈으로 감
-		session.invalidate();
-		rattr.addFlashAttribute("msg", "LOUT_OK");
-		return "redirect:/";
+		try {
+			// 세션을 종료한 후 로그아웃 완료 메시지와 함께 홈으로 감
+			session.invalidate();
+			rattr.addFlashAttribute("msg", "LOUT_OK");
+			return "redirect:/";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/";
+		}
 	}
 	
 	// 아이디 패스워드 일치하는지 검사하는 메서드
 	private boolean loginCheck(String id, String pwd) {
-		UserDto user = userService.getUser(id);
-		if(user==null) {
+		try {
+			UserDto user = userService.getUser(id);
+			if(user==null) {
+				return false;
+			}
+			if(!user.getPwd().equals(pwd)) {
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
-		if(!user.getPwd().equals(pwd)) {
-			return false;
-		}
-		return true;
 	}
 }

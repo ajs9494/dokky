@@ -253,8 +253,8 @@ a {
 					error: function() {
 						alert("닉네임 중복체크에 실패했습니다! 다시 시도해 주세요!");
 					}
-				})
-			})
+				});
+			});
 			
 			// 아이디 입력칸에 변화 발생시 아이디 중복체크 메시지를 비운다
 			$("#id").on("input", function() {
@@ -266,8 +266,8 @@ a {
 			$("#nickname").on("input", function() {
 				$("#nick-check-msg").text("");
 				
-			})
-		})
+			});
+		});
 	
 		function formCheck(form) {
 			if (!(4 <= form.id.value.length && form.id.value.length <= 15)) {

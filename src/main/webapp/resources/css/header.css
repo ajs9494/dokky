@@ -38,9 +38,9 @@ a {
 }
 
 #logo {
-	width: 200px;
+	width: 250px;
 	height: 60px;
-	margin-right: 200px;
+	margin-right: 150px;
 	margin-left: 10px;
 	text-align: center;
 	font-size: 3rem;
@@ -61,8 +61,9 @@ a {
 	justify-content: center;
 	width: 250px;
 	height: 60px;
-	margin-left: 200px;
+	margin-left: 150px;
 	margin-right: 10px;
+	min-width: 0;
 }
 
 #login-btn {
@@ -107,4 +108,48 @@ a {
 .menu-board:first-child {
 	width: 251px;
 	border-right: 1px rgb(162, 164, 168, 0.4) solid;
+}
+
+#login-nickname {
+	display: flex;
+    align-items: center;
+	cursor: pointer;
+	white-space: nowrap;
+	min-width: 0;
+}
+
+#login-nickname:hover span {
+	text-decoration: underline;
+}
+
+#login-nickname i {
+	margin-left: 3px;
+}
+
+#login-nickname span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#user-menu-box {
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+	background-color: white;
+	position: absolute;
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#mypage-btn {
+	padding: 10px 0;
+    text-align: center;
+}
+
+#logout-btn {
+	padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }

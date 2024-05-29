@@ -6,18 +6,20 @@ import com.fastcampus.ch2.domain.UserDto;
 
 public interface UserDao {
 
-	int count();
+	int count() throws Exception;
 
-	List<UserDto> selectAll();
+	List<UserDto> selectAll() throws Exception;
 
-	UserDto select(String id);
+	UserDto select(String id) throws Exception;
 
-	int deleteAll();
+	int deleteAll() throws Exception;
 
-	int delete(String id);
+	int delete(String id) throws Exception;
 
-	int insert(UserDto user);
+	int insert(UserDto user) throws Exception;
 
-	int update(UserDto user);
+	int updateInfo(UserDto user) throws Exception;
+	
+	int updatePwd(UserDto user) throws Exception;
 
 }

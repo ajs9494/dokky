@@ -6,9 +6,6 @@
 <%@ page session="false"%>
 <c:set var="hasSessionId"
 	value="${pageContext.request.getSession(false).getAttribute('id') ne null}" />
-<c:set var="loginOut" value="${hasSessionId ? '로그아웃' : '로그인'}" />
-<c:set var="loginOutLink"
-	value="${hasSessionId ? '/ch2/login/logout' : '/ch2/login/login'}" />
 <c:set var="whichBoard"
 	value="${fn:split(req.getServletPath(), '/')[0] eq 'freeBoard' ? 'free' : 'question'}" />
 <!DOCTYPE html>
@@ -272,23 +269,7 @@
 	if(msg=="DEL_OK") alert("게시글을 삭제했습니다");
 	if(msg=="READ_ERR") alert("게시글을 불러오는데 실패했습니다!");
 </script>
-	<div id="header">
-		<div id="logo" class="noto-sans700">
-			<a href="<c:url value='/' />">DOKKY</a>
-		</div>
-		<div id="menu" class="noto-sans700">
-			<div class="menu-board">
-				<a href="<c:url value='/freeBoard/list' />">자유게시판</a>
-			</div>
-			<div class="menu-board">
-				<a href="<c:url value='/questionBoard/list' />">질문게시판</a>
-			</div>
-		</div>
-		<div id="login">
-			<button id="login-btn" class="noto-sans400" onclick="location.href='${loginOutLink}${searchCondition.queryString}&toURL=${req.getServletPath()}'">${loginOut}</button>
-			<button id="register-btn" class="noto-sans400" onclick="location.href='/ch2/register/add'">회원가입</button>
-		</div>
-	</div>
+	<%@include file="header.jsp"%>
 	<div id="container">
 		<div id="board-filter-cnt">
 			<div id="filter-btn-cnt">
@@ -359,7 +340,7 @@
 							<span class="ccnt">[${board.ccnt}]</span>
 							</c:if>
 							</td>
-							<td>${board.writer}</td>
+							<td>${board.writer eq null ? '탈퇴한 회원' : board.writer}</td>
 							<td><c:choose>
 									<c:when test="${board.regdate.time >= startOfToday}">
 										<fmt:formatDate value="${board.regdate}" pattern="HH:mm"

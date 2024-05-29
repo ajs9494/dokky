@@ -5,9 +5,6 @@
 <%@ page session="false"%>
 <c:set var="hasSessionId"
 	value="${pageContext.request.getSession(false).getAttribute('id') ne null}" />
-<c:set var="loginOut" value="${hasSessionId ? '로그아웃' : '로그인'}" />
-<c:set var="loginOutLink"
-	value="${hasSessionId ? '/ch2/login/logout' : '/ch2/login/login'}" />
 <c:set var="whichBoard"
 	value="${fn:split(req.getServletPath(), '/')[0] eq 'freeBoard' ? 'free' : 'question'}" />
 <!DOCTYPE html>
@@ -200,25 +197,7 @@
 </style>
 </head>
 <body>
-	<div id="header">
-		<div id="logo" class="noto-sans700">
-			<a href="<c:url value='/' />">DOKKY</a>
-		</div>
-		<div id="menu" class="noto-sans700">
-			<div class="menu-board">
-				<a href="<c:url value='/freeBoard/list' />">자유게시판</a>
-			</div>
-			<div class="menu-board">
-				<a href="<c:url value='/questionBoard/list' />">질문게시판</a>
-			</div>
-		</div>
-		<div id="login">
-			<button id="login-btn" class="noto-sans400"
-				onclick="location.href='${loginOutLink}'">${loginOut}</button>
-			<button id="register-btn" class="noto-sans400"
-				onclick="location.href='/ch2/register/add'">회원가입</button>
-		</div>
-	</div>
+	<%@include file="header.jsp"%>
 	<form
 		action="<c:url value="${whichBoard eq 'free' ? '/freeBoard/write' : '/questionBoard/write'}${searchCondition.queryString}" />"
 		method="post" id="container" class="noto-sans400"

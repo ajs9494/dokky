@@ -80,24 +80,34 @@ public class RegisterController {
 	
 	// 아이디 중복 검사 메서드
 	private boolean idCheck(String id) {
-		List<UserDto> userList = userService.getUsers();
-		for(UserDto user : userList) {
-			if(id.equals(user.getId())) {
-				return false;
+		try {
+			List<UserDto> userList = userService.getUsers();
+			for(UserDto user : userList) {
+				if(id.equals(user.getId())) {
+					return false;
+				}
 			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 	
 	// 닉네임 중복 검사 메서드
 	private boolean nicknameCheck(String nickname) {
-		List<UserDto> userList = userService.getUsers();
-		for(UserDto user : userList) {
-			if(nickname.equals(user.getNickname())) {
-				return false;
+		try {
+			List<UserDto> userList = userService.getUsers();
+			for(UserDto user : userList) {
+				if(nickname.equals(user.getNickname())) {
+					return false;
+				}
 			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 		
 }

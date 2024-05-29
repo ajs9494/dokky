@@ -27,8 +27,13 @@
 		INSERT INTO user_info VALUES (#{id}, #{pwd}, #{email}, #{name}, #{nickname}, #{birth})
 	</insert>
 	
-	<update id="update" parameterType="UserDto">
+	<update id="updateInfo" parameterType="UserDto">
 		UPDATE user_info 
-		SET pwd = #{pwd}, email = #{email}, name = #{name}, nickname = #{nickname}, birth = #{birth} WHERE id = #{id}
+		SET email = #{email}, name = #{name}, nickname = #{nickname}, birth = #{birth} WHERE id = #{id}
+	</update>
+	
+	<update id="updatePwd" parameterType="UserDto">
+		UPDATE user_info 
+		SET pwd = #{pwd} WHERE id = #{id}
 	</update>
 </mapper>

@@ -6,18 +6,20 @@ import com.fastcampus.ch2.domain.UserDto;
 
 public interface UserService {
 
-	int getCount();
+	int getCount() throws Exception;
 
-	List<UserDto> getUsers();
+	List<UserDto> getUsers() throws Exception;
 
-	UserDto getUser(String id);
+	UserDto getUser(String id) throws Exception;
 
-	int removeUsers();
+	int removeUsers() throws Exception;
 
-	int removeUser(String id);
+	int removeUser(String id) throws Exception;
 
-	int register(UserDto userDto);
+	int register(UserDto userDto) throws Exception;
 
-	int modify(UserDto userDto);
+	int modifyInfo(UserDto userDto) throws Exception;
+	
+	int modifyPwd(UserDto userDto) throws Exception;
 
 }

@@ -14,37 +14,42 @@ public class UserServiceImpl implements UserService {
 	UserDao userDao;
 	
 	@Override
-	public int getCount() {
+	public int getCount() throws Exception {
 		return userDao.count();
 	}
 	
 	@Override
-	public List<UserDto> getUsers() {
+	public List<UserDto> getUsers() throws Exception {
 		return userDao.selectAll();
 	}
 	
 	@Override
-	public UserDto getUser(String id) {
+	public UserDto getUser(String id) throws Exception {
 		return userDao.select(id);
 	}
 	
 	@Override
-	public int removeUsers() {
+	public int removeUsers() throws Exception {
 		return userDao.deleteAll();
 	}
 	
 	@Override
-	public int removeUser(String id) {
+	public int removeUser(String id) throws Exception {
 		return userDao.delete(id);
 	}
 	
 	@Override
-	public int register(UserDto userDto) {
+	public int register(UserDto userDto) throws Exception {
 		return userDao.insert(userDto);
 	}
 	
 	@Override
-	public int modify(UserDto userDto) {
-		return userDao.update(userDto);
+	public int modifyInfo(UserDto userDto) throws Exception {
+		return userDao.updateInfo(userDto);
+	}
+	
+	@Override
+	public int modifyPwd(UserDto userDto) throws Exception {
+		return userDao.updatePwd(userDto);
 	}
 }

@@ -16,37 +16,42 @@ public class UserDaoImpl implements UserDao {
 	private static String namespace = "com.fastcampus.ch2.dao.UserMapper.";
 	
 	@Override
-	public int count() {
+	public int count() throws Exception {
 		return session.selectOne(namespace + "count");
 	}
 	
 	@Override
-	public List<UserDto> selectAll() {
+	public List<UserDto> selectAll() throws Exception {
 		return session.selectList(namespace + "selectAll");
 	}
 	
 	@Override
-	public UserDto select(String id) {
+	public UserDto select(String id) throws Exception {
 		return session.selectOne(namespace + "select", id);
 	}
 	
 	@Override
-	public int deleteAll() {
+	public int deleteAll() throws Exception {
 		return session.delete(namespace + "deleteAll");
 	}
 	
 	@Override
-	public int delete(String id) {
+	public int delete(String id) throws Exception {
 		return session.delete(namespace + "delete", id);
 	}
 	
 	@Override
-	public int insert(UserDto user) {
+	public int insert(UserDto user) throws Exception {
 		return session.insert(namespace + "insert", user);
 	}
 	
 	@Override
-	public int update(UserDto user) {
-		return session.update(namespace + "update", user);
+	public int updateInfo(UserDto user) throws Exception {
+		return session.update(namespace + "updateInfo", user);
+	}
+	
+	@Override
+	public int updatePwd(UserDto user) throws Exception {
+		return session.update(namespace + "updatePwd", user);
 	}
 }
