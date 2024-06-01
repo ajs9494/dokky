@@ -21,3 +21,7 @@
 * 2024-05-03 게시글 카테고리 기능 추가
 * 2024-05-16 게시글 이미지, 동영상 삽입 기능 추가
 * 2024-05-29 마이페이지 기능 추가
+
+## ERD (Entity Relationship Diagram)
+2024-06-01
+![ERD](https://github.com/ajs9494/dokky/assets/166977178/03ecfcc0-a9ff-4fdb-9d1e-6a46308eaa41)
